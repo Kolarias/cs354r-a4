@@ -1,0 +1,4 @@
+[submodule "Assignment2/godot-cpp"]
+	path = Assignment2/godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+	branch = 3.x
