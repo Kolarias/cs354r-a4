@@ -11,6 +11,8 @@ class Player : public KinematicBody
     GODOT_CLASS(Player, KinematicBody);
 
 private:
+    Vector3 direction;
+    float velocity;
 
 public:
     static void _register_methods();
