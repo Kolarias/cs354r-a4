@@ -7,7 +7,7 @@ reloadable=false
 
 [entry]
 
-X11.64="res://bin/x11/gamelib.so"
+X11.64="res://bin/x11/libgamelib.so"
 Windows.64="res://bin/win64/gamelib.dll"
 OSX.64="res://bin/osx/gamelib.dylib"
 
