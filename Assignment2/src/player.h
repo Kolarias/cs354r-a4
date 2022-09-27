@@ -11,10 +11,13 @@ class Player : public KinematicBody
     GODOT_CLASS(Player, KinematicBody);
 
 private:
-    Vector3 direction;
+
+    Vector3 movement;
+    bool AD_rotate;
     float velocity;
 
 public:
+
     static void _register_methods();
 
     void _init();

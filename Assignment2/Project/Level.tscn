@@ -7,10 +7,12 @@
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.483291, 4.41969, -3.1549 )
+Rotate = true
+Velocity = 0.3
 
 [node name="Floor2" parent="." instance=ExtResource( 2 )]
 transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -0.0200801, 0.655136, -0.755244, 0.0174123, 0.755511, 0.654905, 0.999647, -9.30994e-10, -0.0265782, -16.1883, 15.09, -0.0871567 )
+transform = Transform( -0.0348995, 0.642396, -0.765578, 0, 0.766044, 0.642788, 0.999391, 0.0224329, -0.0267345, -16, 15, 0 )
 fov = 86.4597
