@@ -12,7 +12,12 @@ class Player : public KinematicBody
 
 private:
 
+    Vector3 movement;
+    bool AD_rotate;
+    float velocity;
+
 public:
+
     static void _register_methods();
 
     void _init();
