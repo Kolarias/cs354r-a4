@@ -1,14 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Floor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GUI.tscn" type="PackedScene" id=3]
 
 [node name="Level" type="Spatial"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.483291, 4.41969, -3.1549 )
 Rotate = true
-Velocity = 0.3
+Velocity = 1.0
 
 [node name="Floor2" parent="." instance=ExtResource( 2 )]
 transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
@@ -16,3 +17,5 @@ transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -0.0348995, 0.642396, -0.765578, 0, 0.766044, 0.642788, 0.999391, 0.0224329, -0.0267345, -16, 15, 0 )
 fov = 86.4597
+
+[node name="GUI" parent="Camera" instance=ExtResource( 3 )]
