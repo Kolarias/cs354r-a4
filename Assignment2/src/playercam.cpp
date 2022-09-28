@@ -39,13 +39,12 @@ void PlayerCam::_input(InputEvent* event) {
 
     InputEventMouseMotion *m2 = Object::cast_to<InputEventMouseMotion>(event);
     if (m2) {
-        // Hard-coded paths again!
         player->rotate_y((-m2->get_relative().x * mouse_sensitivity) * (M_PI / 180));
         pivot->rotate_z((-m2->get_relative().y * mouse_sensitivity) * (M_PI / 180));
         // clamp so rotating vertically doesn't loop back over again
         pivot->set_rotation(Vector3(pivot->get_rotation().x, pivot->get_rotation().y,
             (std::max<double>(-80 * (M_PI / 180), std::min<double>(pivot->get_rotation().z,
-            45 * (M_PI / 180))))));
+            20 * (M_PI / 180))))));
     }
 }
 

@@ -12,9 +12,13 @@ class Player : public KinematicBody
 
 private:
 
+    Transform start_pos;
     Vector3 movement;
+    Vector3 fall_vec;
     bool AD_rotate;
     float velocity;
+    float gravity;
+    float jump;
 
 public:
 
