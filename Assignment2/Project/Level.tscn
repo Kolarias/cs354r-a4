@@ -9,8 +9,7 @@
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
-Velocity = 0.3
-"Jump Height" = 10.0
+Velocity = 40.0
 
 [node name="Pivot" type="Spatial" parent="Player"]
 
