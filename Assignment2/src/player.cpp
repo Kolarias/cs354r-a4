@@ -15,7 +15,7 @@ void Player::_register_methods()
     register_property<Player, bool>("Rotate", &Player::AD_rotate, false);
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
     register_property<Player, float>("Gravity", &Player::gravity, 9.8);
-    register_property<Player, float>("Jump Height", &Player::gravity, 5);
+    register_property<Player, float>("Jump Height", &Player::jump, 5);
 }
 
 void Player::_init() 
@@ -87,7 +87,7 @@ void Player::_physics_process(float delta)
     move_and_slide(fall_vec, Vector3::UP);
     Vector3 direction = Vector3(movement);
     direction.rotate(Vector3(0,1,0), Spatial::get_rotation().y);
-    godot::Ref<godot::KinematicCollision> collision = move_and_collide(direction * velocity);
+    godot::Ref<godot::KinematicCollision> collision = move_and_collide(direction * velocity * delta);
 }
 
 }
