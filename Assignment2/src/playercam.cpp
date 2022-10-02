@@ -1,4 +1,5 @@
 #include "playercam.h"
+#include "player.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -19,12 +20,12 @@ void PlayerCam::_init() {
 }
 
 void PlayerCam::_ready() {
-    Object::cast_to<Spatial>(Node::get_node("/root/Level/Player"))->connect("input_event", this, "_input");
+    Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"))->connect("input_event", this, "_input");
 }
 
 void PlayerCam::_input(InputEvent* event) {
     // Hard-coded! Consider making more dynamic?
-    Spatial* player = Object::cast_to<Spatial>(Node::get_node("/root/Level/Player"));
+    Player::Player* player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     Spatial* pivot = Object::cast_to<Spatial>(Node::get_node("/root/Level/Player/Pivot"));
 
     if (input->is_action_just_pressed("ui_cancel")) {
@@ -39,7 +40,9 @@ void PlayerCam::_input(InputEvent* event) {
 
     InputEventMouseMotion *m2 = Object::cast_to<InputEventMouseMotion>(event);
     if (m2) {
-        player->rotate_y((-m2->get_relative().x * mouse_sensitivity) * (M_PI / 180));
+        if (!player->is_on_ledge()) {
+            player->rotate_y((-m2->get_relative().x * mouse_sensitivity) * (M_PI / 180));
+        }
         pivot->rotate_z((-m2->get_relative().y * mouse_sensitivity) * (M_PI / 180));
         // clamp so rotating vertically doesn't loop back over again
         pivot->set_rotation(Vector3(pivot->get_rotation().x, pivot->get_rotation().y,

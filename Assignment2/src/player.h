@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include <KinematicBody.hpp>
+#include <RayCast.hpp>
 
 namespace Player 
 {
@@ -19,6 +20,13 @@ private:
     float velocity;
     float gravity;
     float jump;
+    bool on_ledge;
+    KinematicBody* player;
+    RayCast* ray1;
+    RayCast* ray2;
+    RayCast* ray3;
+    RayCast* ray4;
+    RayCast* ray5;
 
 public:
 
@@ -26,6 +34,8 @@ public:
 
     void _init();
     void _ready();
+
+    bool is_on_ledge();
 
     void _process(float delta);
     void _physics_process(float delta);

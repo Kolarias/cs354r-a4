@@ -15,7 +15,7 @@ void Player::_register_methods()
     register_property<Player, bool>("Rotate", &Player::AD_rotate, false);
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
     register_property<Player, float>("Gravity", &Player::gravity, 9.8);
-    register_property<Player, float>("Jump Height", &Player::jump, 5);
+    register_property<Player, float>("Jump Height", &Player::jump, 10);
 }
 
 void Player::_init() 
@@ -24,25 +24,38 @@ void Player::_init()
     movement = Vector3();
     fall_vec = Vector3();
     gravity = 9.8;
-    jump = 5;
+    jump = 10;
+    on_ledge = false;
 }
 
 void Player::_ready() 
 {
+    ray1 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/LedgeCollider1"));
+    ray2 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/LedgeCollider2"));
+    ray3 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/WallCollider1"));
+    ray4 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/WallCollider2"));
+    ray5 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/FloorCollider1"));
+    player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
+}
+
+bool Player::is_on_ledge(){ 
+    return on_ledge;
 }
 
 void Player::_process(float delta)
 {
     // Process user input
     Input *input = Input::get_singleton();
-        if (input->is_action_pressed("move_forward")){
-        movement.x = 0.5;
-    }
-    else if (input->is_action_pressed("move_backward")){
-        movement.x = -0.5;
-    }
-    else {
-        movement.x = 0;
+    if (!on_ledge) {
+        if (input->is_action_pressed("move_forward") && (!is_on_floor() || ray5->is_colliding())) {
+            movement.x = 0.5;
+        }
+        else if (input->is_action_pressed("move_backward")){
+            movement.x = -0.5;
+        }
+        else {
+            movement.x = 0;
+        }
     }
 
     if (AD_rotate){
@@ -55,10 +68,10 @@ void Player::_process(float delta)
         }
     }
     else {
-        if (input->is_action_pressed("move_right")){
+        if (input->is_action_pressed("move_right") && (!on_ledge || ray3->is_colliding())){
             movement.z = 0.5;
         }
-        else if (input->is_action_pressed("move_left")){
+        else if (input->is_action_pressed("move_left") && (!on_ledge || ray4->is_colliding())){
             movement.z = -0.5;
         }
         else {
@@ -66,13 +79,27 @@ void Player::_process(float delta)
         }
     }
 
+    // Check for ledge
+    if (ray1->is_colliding() && !(ray2->is_colliding()) && !on_ledge) {
+        on_ledge = true;
+        fall_vec = Vector3();
+        movement = Vector3();
+        Vector3 new_position = Vector3(ray1->get_collision_point().x, 
+            player->get_translation().y, ray1->get_collision_point().z);
+        player->set_translation(new_position);
+        player->rotate_y(0);
+    }
+
+
     // Gravity
-    if (!is_on_floor()) {
+    if (!is_on_floor() && !on_ledge) {
         fall_vec.y -= (gravity * delta);
     }
 
-    if (input->is_action_just_pressed("jump") & is_on_floor()) {
+    // Jump
+    if (input->is_action_just_pressed("jump") & (is_on_floor() || on_ledge)) {
         fall_vec.y = jump;
+        on_ledge = false;
     }
 
     // Return to start position if you fell
