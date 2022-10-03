@@ -3,6 +3,7 @@
 #include "GlobalConstants.hpp"
 #include "KinematicCollision.hpp"
 
+#define M_PI 3.14159265358979323846
 
 namespace Player
 {
@@ -48,13 +49,14 @@ void Player::_process(float delta)
     // Get input
     Input *input = Input::get_singleton();
 
-    // If we've touched the floor, set can_grab_ledge to true
+    // If we've touched the floor, we can grab ledges again
     if (is_on_floor() && !can_grab_ledge) {
         can_grab_ledge = true;
     }
 
     // Forward/backward movement
     if (!on_ledge) {
+        // Don't allow movement forward if we're approaching a ledge (floorcollider isn't colliding)
         if (input->is_action_pressed("move_forward") && (!is_on_floor() || ray5->is_colliding())) {
             movement.x = 0.5;
         }
@@ -77,6 +79,7 @@ void Player::_process(float delta)
         }
     }
     else {
+        // If we're on a ledge, only allow left/right movement if there's remaining wall to move to there
         if (input->is_action_pressed("move_right") && (!on_ledge || ray3->is_colliding())){
             movement.z = 0.5;
         }
@@ -90,7 +93,7 @@ void Player::_process(float delta)
     
     // If we're on a ledge, check if we wanna drop
     if (on_ledge) {
-        if (input->is_action_pressed("ledge")) {
+        if (input->is_action_just_pressed("ledge")) {
             on_ledge = false;
             can_grab_ledge = false;
         }
@@ -99,12 +102,24 @@ void Player::_process(float delta)
         // Check for ledge in front of us while walking
         if (is_on_floor() && !ray5->is_colliding()) {
             if(input->is_action_pressed("ledge")) {
+                // Possibly a better way to do this - basically it teleports down to around
+                // where the ledge should be, and sees if it can align itself with a ledge
+                // there. If it can, it aligns with the ledge and stays, otherwise it teleports
+                // back.
                 Vector3 new_translation = Vector3(2, -1.75, 2);
+                Vector3 old_translation = player->get_translation();
                 player->translate(new_translation);
-                player->rotate_y(180);
-                on_ledge = true;
-                fall_vec = Vector3();
-                movement = Vector3();
+                player->rotate_y(M_PI);
+                ray1->force_raycast_update();
+                if (ray1->is_colliding()) {
+                    player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
+                    on_ledge = true;
+                    fall_vec = Vector3();
+                    movement = Vector3();
+                } else {
+                    player->rotate_y(-M_PI);
+                    player->set_translation(old_translation);
+                }
             }
         }
         // Check for ledge while in air
@@ -112,7 +127,8 @@ void Player::_process(float delta)
             Vector3 new_position = Vector3(ray1->get_collision_point().x, 
                 player->get_translation().y, ray1->get_collision_point().z);
             player->set_translation(new_position);
-            player->rotate_y(0);
+            // Figuring out the right math to align to ledges took a looooong time lmao
+            player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
             on_ledge = true;
             fall_vec = Vector3();
             movement = Vector3();
@@ -127,7 +143,7 @@ void Player::_process(float delta)
     // Jump
     if (input->is_action_just_pressed("jump") & (is_on_floor() || on_ledge)) {
         fall_vec.y = jump;
-        // Stop grabbing onto ledge and stop grabbing ledges until we land
+        // Stop grabbing onto current ledge and stop grabbing ledges until we land
         if (on_ledge) {
             on_ledge = false;
             can_grab_ledge = false;
@@ -147,6 +163,15 @@ void Player::_physics_process(float delta)
     Vector3 direction = Vector3(movement);
     direction.rotate(Vector3(0,1,0), Spatial::get_rotation().y);
     godot::Ref<godot::KinematicCollision> collision = move_and_collide(direction * velocity * delta);
+}
+
+// HELPER TAKEN FROM THIS FORUM POST: https://godotengine.org/qa/132087/how-to-make-the-character-face-the-plane-you-are-climbing-on
+Transform Player::align_with_y(Transform xform, Vector3 normal) {
+    xform.basis.y = normal;
+    xform.basis.x = -xform.basis.z.cross(normal);
+    xform.basis = xform.basis.orthonormalized();
+    xform.basis = xform.basis.rotated(xform.basis.z, -M_PI/2);
+    return xform;
 }
 
 }

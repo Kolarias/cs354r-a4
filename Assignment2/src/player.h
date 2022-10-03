@@ -38,6 +38,7 @@ public:
     void _ready();
 
     bool is_on_ledge();
+    Transform align_with_y(Transform xform, Vector3 new_y);
 
     void _process(float delta);
     void _physics_process(float delta);

@@ -24,7 +24,7 @@ void PlayerCam::_ready() {
 }
 
 void PlayerCam::_input(InputEvent* event) {
-    // Hard-coded! Consider making more dynamic?
+    // Hard-coded paths! Consider making more dynamic?
     Player::Player* player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     Spatial* pivot = Object::cast_to<Spatial>(Node::get_node("/root/Level/Player/Pivot"));
 
@@ -52,7 +52,7 @@ void PlayerCam::_input(InputEvent* event) {
 }
 
 void PlayerCam::_process(float delta) {
-    // Hard-coded! Consider making more dynamic?
+    // Hard-coded paths! Consider making more dynamic?
     Spatial* camera = Object::cast_to<Spatial>(Node::get_node("/root/Level/Player/Pivot/Camera"));
     RayCast* camcollider = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/Pivot/CamCollider"));
 
