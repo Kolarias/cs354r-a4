@@ -26,6 +26,7 @@ void Player::_init()
     gravity = 9.8;
     jump = 10;
     on_ledge = false;
+    can_grab_ledge = true;
 }
 
 void Player::_ready() 
@@ -44,8 +45,15 @@ bool Player::is_on_ledge(){
 
 void Player::_process(float delta)
 {
-    // Process user input
+    // Get input
     Input *input = Input::get_singleton();
+
+    // If we've touched the floor, set can_grab_ledge to true
+    if (is_on_floor() && !can_grab_ledge) {
+        can_grab_ledge = true;
+    }
+
+    // Forward/backward movement
     if (!on_ledge) {
         if (input->is_action_pressed("move_forward") && (!is_on_floor() || ray5->is_colliding())) {
             movement.x = 0.5;
@@ -56,8 +64,9 @@ void Player::_process(float delta)
         else {
             movement.x = 0;
         }
-    }
+    } 
 
+    // Move or rotate left and right
     if (AD_rotate){
         if (input->is_action_pressed("move_right")){
             rotate_y(-0.02);
@@ -78,18 +87,37 @@ void Player::_process(float delta)
             movement.z = 0;
         }
     }
-
-    // Check for ledge
-    if (ray1->is_colliding() && !(ray2->is_colliding()) && !on_ledge) {
-        on_ledge = true;
-        fall_vec = Vector3();
-        movement = Vector3();
-        Vector3 new_position = Vector3(ray1->get_collision_point().x, 
-            player->get_translation().y, ray1->get_collision_point().z);
-        player->set_translation(new_position);
-        player->rotate_y(0);
+    
+    // If we're on a ledge, check if we wanna drop
+    if (on_ledge) {
+        if (input->is_action_pressed("ledge")) {
+            on_ledge = false;
+            can_grab_ledge = false;
+        }
+    // Otherwise, if we're not on a ledge...
+    } else {
+        // Check for ledge in front of us while walking
+        if (is_on_floor() && !ray5->is_colliding()) {
+            if(input->is_action_pressed("ledge")) {
+                Vector3 new_translation = Vector3(2, -1.75, 2);
+                player->translate(new_translation);
+                player->rotate_y(180);
+                on_ledge = true;
+                fall_vec = Vector3();
+                movement = Vector3();
+            }
+        }
+        // Check for ledge while in air
+        if (ray1->is_colliding() && !(ray2->is_colliding()) && can_grab_ledge) {
+            Vector3 new_position = Vector3(ray1->get_collision_point().x, 
+                player->get_translation().y, ray1->get_collision_point().z);
+            player->set_translation(new_position);
+            player->rotate_y(0);
+            on_ledge = true;
+            fall_vec = Vector3();
+            movement = Vector3();
+        }
     }
-
 
     // Gravity
     if (!is_on_floor() && !on_ledge) {
@@ -99,7 +127,11 @@ void Player::_process(float delta)
     // Jump
     if (input->is_action_just_pressed("jump") & (is_on_floor() || on_ledge)) {
         fall_vec.y = jump;
-        on_ledge = false;
+        // Stop grabbing onto ledge and stop grabbing ledges until we land
+        if (on_ledge) {
+            on_ledge = false;
+            can_grab_ledge = false;
+        }
     }
 
     // Return to start position if you fell

@@ -4,6 +4,7 @@
 #include "Common.h"
 #include <KinematicBody.hpp>
 #include <RayCast.hpp>
+#include <Transform.hpp>
 
 namespace Player 
 {
@@ -21,6 +22,7 @@ private:
     float gravity;
     float jump;
     bool on_ledge;
+    bool can_grab_ledge;
     KinematicBody* player;
     RayCast* ray1;
     RayCast* ray2;
