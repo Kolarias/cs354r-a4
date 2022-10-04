@@ -3,6 +3,7 @@
 #include "GlobalConstants.hpp"
 #include "KinematicCollision.hpp"
 #include "token.h"
+#include "spike.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -14,6 +15,7 @@ void Player::_register_methods()
     register_method("_process", &Player::_process);
     register_method("_physics_process", &Player::_physics_process);
     register_method("collision_handler", &Player::collision_handler);
+    register_method("spike_handler", &Player::spike_handler);
 
     register_property<Player, bool>("Rotate", &Player::AD_rotate, false);
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
@@ -42,6 +44,7 @@ void Player::_ready()
     player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
     player_area = (Area*)(player->get_node("PlayerArea"));
     player_area->connect("area_entered", player, "collision_handler");
+    player_area->connect("body_entered", player, "spike_handler");
     token_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/TokenCounter/Tokens/Background/Number"));
     token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/TokenAudio"));
     damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/DamageAudio"));
@@ -198,4 +201,13 @@ void Player::collision_handler(Area* area)
         token->queue_free();
     }
 }
+
+void Player::spike_handler(Node* body)
+{
+    Spike::Spike* spike = Object::cast_to<Spike::Spike>(body);
+    if (spike) {
+        Godot::print("collided with spike");
+    }
+}
+
 }   
