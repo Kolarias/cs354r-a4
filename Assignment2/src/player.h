@@ -8,6 +8,8 @@
 #include <Area.hpp>
 #include <Label.hpp>
 #include <TextureProgress.hpp>
+#include <AudioStreamPlayer.hpp>
+
 #include <string>
 
 namespace Player 
@@ -37,6 +39,8 @@ private:
     RayCast* ray3;
     RayCast* ray4;
     RayCast* ray5;
+    AudioStreamPlayer* token_audio;
+    AudioStreamPlayer* damage_audio;
 
 public:
 

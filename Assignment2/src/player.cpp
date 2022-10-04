@@ -43,6 +43,8 @@ void Player::_ready()
     player_area = (Area*)(player->get_node("PlayerArea"));
     player_area->connect("area_entered", player, "collision_handler");
     token_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/TokenCounter/Tokens/Background/Number"));
+    token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/TokenAudio"));
+    damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/DamageAudio"));
 }
 
 bool Player::is_on_ledge(){ 
@@ -184,17 +186,14 @@ void Player::collision_handler(Area* area)
 {
     Token::Token* token = Object::cast_to<Token::Token>(area);
     if (token) {
-        // need to do three things
-
         // 1) Update token counter on GUI
-        int curr_count = (token_counter->get_text().hex_to_int());
+        int curr_count = stoi(token_counter->get_text().utf8().get_data());
         curr_count += 1;
-        std::string std_new_count = std::to_string(curr_count);
-        godot::String new_count = godot::String(std_new_count.c_str());
+        std::string std_string = std::to_string(curr_count);
+        godot::String new_count = godot::String(std_string.c_str());
         token_counter->set_text(new_count);
-
         // 2) Play pickup sound
-
+        token_audio->play();
         // 3) Delete token from screen
         token->queue_free();
     }
