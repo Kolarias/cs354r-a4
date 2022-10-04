@@ -23,6 +23,7 @@ private:
     bool on_ledge;
     bool can_grab_ledge;
     bool jumped_twice;
+    bool gliding;
     KinematicBody* player;
     RayCast* ray1;
     RayCast* ray2;
