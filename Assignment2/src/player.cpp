@@ -2,6 +2,7 @@
 #include "Input.hpp"
 #include "GlobalConstants.hpp"
 #include "KinematicCollision.hpp"
+#include "token.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -12,6 +13,7 @@ void Player::_register_methods()
     register_method("_ready", &Player::_ready);
     register_method("_process", &Player::_process);
     register_method("_physics_process", &Player::_physics_process);
+    register_method("collision_handler", &Player::collision_handler);
 
     register_property<Player, bool>("Rotate", &Player::AD_rotate, false);
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
@@ -38,6 +40,9 @@ void Player::_ready()
     ray4 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/WallCollider2"));
     ray5 = Object::cast_to<RayCast>(Node::get_node("/root/Level/Player/FloorCollider1"));
     player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
+    player_area = (Area*)(player->get_node("PlayerArea"));
+    player_area->connect("area_entered", player, "collision_handler");
+    token_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/TokenCounter/Tokens/Background/Number"));
 }
 
 bool Player::is_on_ledge(){ 
@@ -166,7 +171,8 @@ void Player::_physics_process(float delta)
 }
 
 // HELPER TAKEN FROM THIS FORUM POST: https://godotengine.org/qa/132087/how-to-make-the-character-face-the-plane-you-are-climbing-on
-Transform Player::align_with_y(Transform xform, Vector3 normal) {
+Transform Player::align_with_y(Transform xform, Vector3 normal) 
+{
     xform.basis.y = normal;
     xform.basis.x = -xform.basis.z.cross(normal);
     xform.basis = xform.basis.orthonormalized();
@@ -174,4 +180,23 @@ Transform Player::align_with_y(Transform xform, Vector3 normal) {
     return xform;
 }
 
+void Player::collision_handler(Area* area)
+{
+    Token::Token* token = Object::cast_to<Token::Token>(area);
+    if (token) {
+        // need to do three things
+
+        // 1) Update token counter on GUI
+        int curr_count = (token_counter->get_text().hex_to_int());
+        curr_count += 1;
+        std::string std_new_count = std::to_string(curr_count);
+        godot::String new_count = godot::String(std_new_count.c_str());
+        token_counter->set_text(new_count);
+
+        // 2) Play pickup sound
+
+        // 3) Delete token from screen
+        token->queue_free();
+    }
 }
+}   

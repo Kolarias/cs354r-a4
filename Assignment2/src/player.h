@@ -5,6 +5,10 @@
 #include <KinematicBody.hpp>
 #include <RayCast.hpp>
 #include <Transform.hpp>
+#include <Area.hpp>
+#include <Label.hpp>
+#include <TextureProgress.hpp>
+#include <string>
 
 namespace Player 
 {
@@ -24,6 +28,10 @@ private:
     bool on_ledge;
     bool can_grab_ledge;
     KinematicBody* player;
+    Label* token_counter;
+    Label* hp_counter;
+    TextureProgress* hp_gauge;
+    Area* player_area;
     RayCast* ray1;
     RayCast* ray2;
     RayCast* ray3;
@@ -42,6 +50,8 @@ public:
 
     void _process(float delta);
     void _physics_process(float delta);
+
+    void collision_handler(Area* area);
 };
 }
 
