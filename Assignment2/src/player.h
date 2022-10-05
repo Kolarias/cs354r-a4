@@ -16,19 +16,24 @@ private:
 
     Transform start_pos;
     Vector3 movement;
-    Vector3 fall_vec;
+    Vector3 air_inertia;
     bool AD_rotate;
     float velocity;
     float gravity;
     float jump;
     bool on_ledge;
     bool can_grab_ledge;
+    bool jumped_twice;
+    bool gliding;
+    float slide_angle;
     KinematicBody* player;
     RayCast* ray1;
     RayCast* ray2;
     RayCast* ray3;
     RayCast* ray4;
     RayCast* ray5;
+    Input* input;
+
 
 public:
 
@@ -42,6 +47,11 @@ public:
 
     void _process(float delta);
     void _physics_process(float delta);
+
+    void process_on_floor();
+    void process_on_air();
+    void process_on_ledge();
+    void wasd_movement(bool on_air);
 };
 }
 
