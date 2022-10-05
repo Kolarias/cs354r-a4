@@ -98,9 +98,7 @@ void Player::wasd_movement(bool on_air){
     if (!on_ledge){
         // Forward/backward movement
         if (input->is_action_pressed("move_forward")) {
-            if (on_air || ray5->is_colliding()){
-                movement.x = 1 * scale;
-            }
+            movement.x = 1 * scale;
         }
         else if (input->is_action_pressed("move_backward")){
             movement.x = -1 * scale;
@@ -142,24 +140,26 @@ void Player::process_on_floor(){
 
     wasd_movement(false);
 
-    // Check for ledge and Ledge Key
-    if (input->is_action_pressed("ledge") && !ray5->is_colliding()){
-        // Possibly a better way to do this - basically it teleports down to around
-        // where the ledge should be, and sees if it can align itself with a ledge
-        // there. If it can, it aligns with the ledge and stays, otherwise it teleports
-        // back.
-        Vector3 new_translation = Vector3(2, -1.75, 2);
-        Vector3 old_translation = player->get_translation();
-        player->translate(new_translation);
-        player->rotate_y(M_PI);
-        ray1->force_raycast_update();
-        if (ray1->is_colliding()) {
-            player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
-            on_ledge = true;
-            movement = Vector3();
-        } else {
-            player->rotate_y(-M_PI);
-            player->set_translation(old_translation);
+    if (!ray5->is_colliding()){
+        movement.x = 0;
+        if (input->is_action_pressed("ledge")){
+            // Possibly a better way to do this - basically it teleports down to around
+            // where the ledge should be, and sees if it can align itself with a ledge
+            // there. If it can, it aligns with the ledge and stays, otherwise it teleports
+            // back.
+            Vector3 new_translation = Vector3(2, -1.75, 2);
+            Vector3 old_translation = player->get_translation();
+            player->translate(new_translation);
+            player->rotate_y(M_PI);
+            ray1->force_raycast_update();
+            if (ray1->is_colliding()) {
+                player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
+                on_ledge = true;
+                movement = Vector3();
+            } else {
+                player->rotate_y(-M_PI);
+                player->set_translation(old_translation);
+            }
         }
     }
 
@@ -171,6 +171,9 @@ void Player::process_on_floor(){
 
 // Function that process user input when player is on the air
 void Player::process_on_air(){
+    if (input->is_action_just_pressed("glide")){
+        movement.y = 0;
+    }
     if (input->is_action_pressed("glide")){
         gliding = true;
         movement.x = 1;
