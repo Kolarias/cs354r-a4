@@ -20,19 +20,24 @@ class Player : public KinematicBody
 
 private:
 
-    Transform start_pos;
-    Vector3 movement;
-    Vector3 air_inertia;
+    // Editable in Godot editor
     bool AD_rotate;
+    bool mouse_rotate;
     float velocity;
     float gravity;
     float jump;
+    float slide_angle;
+
+    // Non-editable in Godot editor
+    Transform start_pos;
+    KinematicBody* player;
+    Vector3 movement;
+
     bool on_ledge;
     bool can_grab_ledge;
     bool jumped_twice;
     bool gliding;
-    float slide_angle;
-    KinematicBody* player;
+
     Label* token_counter;
     Label* hp_counter;
     TextureProgress* hp_gauge;
@@ -53,12 +58,12 @@ public:
 
     void _init();
     void _ready();
-
-    bool is_on_ledge();
-    Transform align_with_y(Transform xform, Vector3 new_y);
-
     void _process(float delta);
     void _physics_process(float delta);
+
+    bool is_on_ledge();
+    bool can_mouse_rotate();
+    Transform align_with_y(Transform xform, Vector3 new_y);
 
     void collision_handler(Area* area);
     void spike_handler(Node* body);
