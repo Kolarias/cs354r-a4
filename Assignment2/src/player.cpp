@@ -122,14 +122,18 @@ void Player::collision_handler(Area* area)
         // 1) Decrease health counter on GUI and gauge
         int curr_count = stoi(hp_counter->get_text().utf8().get_data());
         curr_count -= 5;
-        std::string std_string = std::to_string(curr_count);
-        godot::String new_count = godot::String(std_string.c_str());
-        hp_counter->set_text(new_count);
-        hp_gauge->set_value(hp_gauge->get_value() - 5);
+        if (curr_count == 0) {
+            get_tree()->reload_current_scene();
+        } else {
+            std::string std_string = std::to_string(curr_count);
+            godot::String new_count = godot::String(std_string.c_str());
+            hp_counter->set_text(new_count);
+            hp_gauge->set_value(hp_gauge->get_value() - 5);
+            // 3) Delete spike from screen
+            spike->queue_free();
+        }
         // 2) Play damage sound
         damage_audio->play();
-        // 3) Delete spike from screen
-        spike->queue_free();
     }
 }
 
