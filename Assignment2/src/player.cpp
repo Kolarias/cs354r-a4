@@ -96,7 +96,7 @@ void Player::_process(float delta)
 
     // Gravity
     if (!is_on_floor() && !on_ledge) {
-        float scale = gliding ? 0.3 : 1.0;
+        float scale = gliding ? 0.1 : 1.0;
         movement.y -= (gravity * delta * scale);
     }
     // Return to start position if you fell
@@ -168,7 +168,7 @@ void Player::collision_handler(Area* area)
 void Player::wasd_movement(bool on_air){
     float scale = on_air ? 0.7 : 1.0;
 
-    if (!on_ledge){
+    if (!on_ledge && !gliding){
         // Forward/backward movement
         if (input->is_action_pressed("move_forward")) {
             movement.x = 1 * scale;
@@ -250,7 +250,9 @@ void Player::process_on_floor(){
 // Function that process user input when player is on the air
 void Player::process_on_air(){
     if (input->is_action_just_pressed("glide")){
-        movement.y = 0;
+        if (movement.y > 0){
+            movement.y = 0;
+        }
     }
     if (input->is_action_pressed("glide")){
         gliding = true;
@@ -258,7 +260,6 @@ void Player::process_on_air(){
     }
     else {
         gliding = false;
-        wasd_movement(true);
         // Double Jump
         if (input->is_action_just_pressed("jump") & !jumped_twice){
             // adjusted double jump - this can be changed so both jumps are of equal height
@@ -266,6 +267,7 @@ void Player::process_on_air(){
             jumped_twice = true;
         }
     }
+    wasd_movement(true);
 
     // Check for ledge
     if (ray1->is_colliding() && !ray2->is_colliding() && (ray3->is_colliding() || ray4->is_colliding()) && can_grab_ledge) {

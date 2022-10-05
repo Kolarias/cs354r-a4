@@ -15,6 +15,8 @@
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.02941, 0 )
 "Mouse Rotate" = true
 Velocity = 7.0
+"Slide Angle" = 1.5
+"Mute Audio" = true
 
 [node name="Pivot" type="Spatial" parent="Player"]
 
@@ -85,6 +87,7 @@ volume_db = 3.0
 [node name="BackgroundAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 12 )
 volume_db = -15.0
+autoplay = true
 
 [node name="TokenAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
