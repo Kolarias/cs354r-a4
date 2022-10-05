@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Floor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Platform.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Token.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/bgm.wav" type="AudioStream" id=12]
+[ext_resource path="res://assets/coin.wav" type="AudioStream" id=13]
+[ext_resource path="res://Spike.tscn" type="PackedScene" id=14]
 
 [node name="Level" type="Spatial"]
 
@@ -11,11 +15,79 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 Velocity = 10.0
 "Slide Angle" = 2.0
 
+[node name="Pivot" type="Spatial" parent="Player"]
+
+[node name="LedgeCollider1" type="RayCast" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0 )
+enabled = true
+cast_to = Vector3( 2, 0, 0 )
+
+[node name="LedgeCollider2" type="RayCast" parent="Player"]
+transform = Transform( 0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, 0, 0, 1, 0, 0.75, 0 )
+enabled = true
+cast_to = Vector3( 2, 0, 0 )
+
+[node name="WallCollider1" type="RayCast" parent="Player"]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0 )
+enabled = true
+cast_to = Vector3( 2, 0, 0 )
+
+[node name="WallCollider2" type="RayCast" parent="Player"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+enabled = true
+cast_to = Vector3( 2, 0, 0 )
+
+[node name="FloorCollider1" type="RayCast" parent="Player"]
+transform = Transform( 0.737277, 0.67559, 0, -0.67559, 0.737277, 0, 0, 0, 1, 0, 0, 0 )
+enabled = true
+cast_to = Vector3( 1.75, 0, 0 )
+
+[node name="ObjCollider" type="RayCast" parent="Player"]
+cast_to = Vector3( 1.75, 0, 0 )
+
+[node name="GUI" type="MarginContainer" parent="Player"]
+margin_right = 1024.0
+margin_bottom = 93.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Floor2" parent="." instance=ExtResource( 2 )]
-transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
+transform = Transform( 15, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0 )
 
 [node name="Platform" parent="." instance=ExtResource( 5 )]
 transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 10, 5, 10 )
 
 [node name="Platform2" parent="." instance=ExtResource( 5 )]
 transform = Transform( 23.7345, 0, 0, 0, 1.5139, 11.9905, 0, -0.453028, 2.77329, -10.2531, 3.60787, 17.3318 )
+
+[node name="Platform3" parent="." instance=ExtResource( 5 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 0, 15, 0 )
+
+[node name="Platform4" parent="." instance=ExtResource( 5 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 15, 25, 20, 10 )
+
+[node name="Platform5" parent="." instance=ExtResource( 5 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 15, 25, 23, 10 )
+
+[node name="Token" parent="." instance=ExtResource( 6 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, 5.536, 3, 0 )
+
+[node name="Token2" parent="." instance=ExtResource( 6 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, 9.23109, 3.36281, 0 )
+
+[node name="DamageAudio" type="AudioStreamPlayer" parent="."]
+
+[node name="BackgroundAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+autoplay = true
+
+[node name="TokenAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+
+[node name="Spike" parent="." instance=ExtResource( 14 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -10, 3, 0 )
