@@ -53,12 +53,12 @@ cast_to = Vector3( -8, 0, 0 )
 [node name="GUI" parent="." instance=ExtResource( 3 )]
 
 [node name="LedgeCollider1" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0641634, 0.505766, 0 )
 enabled = true
 cast_to = Vector3( 2, 0, 0 )
 
 [node name="LedgeCollider2" type="RayCast" parent="."]
-transform = Transform( 1.85584, -0.354862, 0.114201, 0.716399, 0.933597, -0.00947285, -0.206512, 0.0496968, 0.993412, 0.0406817, 0.540612, 0.0349147 )
+transform = Transform( 1.51198, -0.28911, 0.0930407, 0.607267, 0.725131, -0.213878, -0.0169718, 0.286159, 0.958144, -0.18729, 0.517579, 0.0361409 )
 enabled = true
 cast_to = Vector3( 2, 0, 0 )
 
