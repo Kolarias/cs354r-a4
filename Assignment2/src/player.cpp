@@ -88,6 +88,10 @@ void Player::_process(float delta)
         bgm_audio->set_stream_paused(mute);
     }
 
+    if (input->is_action_just_pressed("reset_scene")) {
+        reset_scene();
+    }
+
     // Processes that will always affect the player no matter their state:
 
     // Gravity
@@ -144,7 +148,8 @@ void Player::collision_handler(Area* area)
         int curr_count = stoi(hp_counter->get_text().utf8().get_data());
         curr_count -= damage_val;
         if (curr_count == 0) {
-            get_tree()->reload_current_scene();
+            // died; reset scene
+            reset_scene();
         } else {
             std::string std_string = std::to_string(curr_count);
             godot::String new_count = godot::String(std_string.c_str());
@@ -293,4 +298,10 @@ void Player::process_on_ledge(){
         }
     }
 }
+
+void Player::reset_scene() 
+{
+    get_tree()->reload_current_scene();
+}
+
 }
