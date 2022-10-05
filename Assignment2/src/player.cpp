@@ -16,7 +16,8 @@ void Player::_register_methods()
     register_method("collision_handler", &Player::collision_handler);
     register_method("spike_handler", &Player::spike_handler);
 
-    register_property<Player, bool>("Rotate", &Player::AD_rotate, false);
+    register_property<Player, bool>("Mouse Rotate", &Player::mouse_rotate, false);
+    register_property<Player, bool>("AD Rotate", &Player::AD_rotate, false);
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
     register_property<Player, float>("Gravity", &Player::gravity, 9.8);
     register_property<Player, float>("Jump Height", &Player::jump, 10);
@@ -55,6 +56,10 @@ bool Player::is_on_ledge(){
     return on_ledge;
 }
 
+bool Player::can_mouse_rotate(){
+    return mouse_rotate;
+}
+
 void Player::_process(float delta)
 {
     // Get input
@@ -65,6 +70,9 @@ void Player::_process(float delta)
     }
     else if (on_ledge){
         process_on_ledge();
+    }
+    else if (is_on_ceiling() && movement.y > 0){
+        movement.y = -1;
     }
     else {
         process_on_air();
@@ -178,7 +186,9 @@ void Player::process_on_floor(){
     wasd_movement(false);
 
     if (!ray5->is_colliding()){
-        movement.x = 0;
+        if (movement.x > 0){
+            movement.x = 0;
+        }
         if (input->is_action_pressed("ledge")){
             // Possibly a better way to do this - basically it teleports down to around
             // where the ledge should be, and sees if it can align itself with a ledge
@@ -204,10 +214,9 @@ void Player::process_on_floor(){
     if (input->is_action_just_pressed("jump")) {
         movement.y = jump;
     }
-    // this is supposed to help with walking on an angle, for some reason it breaks jumping, like it seems that some times we never fully touch the ground.
-    // else if (movement.y < 0){
-    //     movement.y = 0;
-    // }
+    else if (movement.y < -0.1){
+        movement.y = -0.1;
+    }
 }
 
 // Function that process user input when player is on the air
@@ -231,19 +240,20 @@ void Player::process_on_air(){
     }
 
     // Check for ledge
-    if (ray1->is_colliding() && !(ray2->is_colliding()) && can_grab_ledge) {
+    if (ray1->is_colliding() && !ray2->is_colliding() && (ray3->is_colliding() || ray4->is_colliding()) && can_grab_ledge) {
+        on_ledge = true;
         Vector3 new_position = Vector3(ray1->get_collision_point().x, 
             player->get_translation().y, ray1->get_collision_point().z);
         player->set_translation(new_position);
         // Figuring out the right math to align to ledges took a looooong time lmao
         player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
-        on_ledge = true;
         movement = Vector3();
     }
 }
 
 // Function that process user input when player is hanging on a ledge
 void Player::process_on_ledge(){
+    movement = Vector3();
     gliding = false;
     wasd_movement(false);
     // Ledge Key
