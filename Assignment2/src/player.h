@@ -61,7 +61,6 @@ public:
     void _physics_process(float delta);
 
     void collision_handler(Area* area);
-    void spike_handler(Node* body);
     void process_on_floor();
     void process_on_air();
     void process_on_ledge();

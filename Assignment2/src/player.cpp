@@ -14,7 +14,6 @@ void Player::_register_methods()
     register_method("_process", &Player::_process);
     register_method("_physics_process", &Player::_physics_process);
     register_method("collision_handler", &Player::collision_handler);
-    register_method("spike_handler", &Player::spike_handler);
 
     register_property<Player, bool>("Rotate", &Player::AD_rotate, false);
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
@@ -45,8 +44,9 @@ void Player::_ready()
     player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
     player_area = (Area*)(player->get_node("PlayerArea"));
     player_area->connect("area_entered", player, "collision_handler");
-    player_area->connect("body_entered", player, "spike_handler");
     token_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/TokenCounter/Tokens/Background/Number"));
+    hp_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/HealthBar/HP/Background/Number"));
+    hp_gauge = Object::cast_to<TextureProgress>(Node::get_node("/root/Level/Player/GUI/Bars/HealthBar/Gauge"));
     token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/TokenAudio"));
     damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/DamageAudio"));
 }
@@ -106,6 +106,7 @@ Transform Player::align_with_y(Transform xform, Vector3 normal)
 void Player::collision_handler(Area* area)
 {
     Token::Token* token = Object::cast_to<Token::Token>(area);
+    Spike::Spike* spike = Object::cast_to<Spike::Spike>(area);
     if (token) {
         // 1) Update token counter on GUI
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
@@ -117,14 +118,18 @@ void Player::collision_handler(Area* area)
         token_audio->play();
         // 3) Delete token from screen
         token->queue_free();
-    }
-}
-
-void Player::spike_handler(Node* body)
-{
-    Spike::Spike* spike = Object::cast_to<Spike::Spike>(body);
-    if (spike) {
-        Godot::print("collided with spike");
+    } else if (spike) {
+        // 1) Decrease health counter on GUI and gauge
+        int curr_count = stoi(hp_counter->get_text().utf8().get_data());
+        curr_count -= 5;
+        std::string std_string = std::to_string(curr_count);
+        godot::String new_count = godot::String(std_string.c_str());
+        hp_counter->set_text(new_count);
+        hp_gauge->set_value(hp_gauge->get_value() - 5);
+        // 2) Play damage sound
+        damage_audio->play();
+        // 3) Delete spike from screen
+        spike->queue_free();
     }
 }
 

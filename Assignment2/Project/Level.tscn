@@ -42,9 +42,6 @@ transform = Transform( 0.737277, 0.67559, 0, -0.67559, 0.737277, 0, 0, 0, 1, 0, 
 enabled = true
 cast_to = Vector3( 1.75, 0, 0 )
 
-[node name="ObjCollider" type="RayCast" parent="Player"]
-cast_to = Vector3( 1.75, 0, 0 )
-
 [node name="GUI" type="MarginContainer" parent="Player"]
 margin_right = 1024.0
 margin_bottom = 93.0
@@ -90,4 +87,4 @@ autoplay = true
 stream = ExtResource( 13 )
 
 [node name="Spike" parent="." instance=ExtResource( 14 )]
-transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -10, 3, 0 )
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 12, 3, 0 )

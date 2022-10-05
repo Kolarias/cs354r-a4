@@ -2,18 +2,22 @@
 #define SPIKE_H
 
 #include "Common.h"
-#include <StaticBody.hpp>
 #include <Area.hpp>
 
 namespace Spike
 {
-class Spike : public StaticBody
+class Spike : public Area
 {
-    GODOT_CLASS(Spike, StaticBody);
+    GODOT_CLASS(Spike, Area);
 
 private:
 
 public:
+
+    static void _register_methods();
+    void _init();
+    void _ready();
+    
 };
 }
 
