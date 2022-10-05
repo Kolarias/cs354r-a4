@@ -31,6 +31,7 @@ private:
     bool can_grab_ledge;
     bool jumped_twice;
     bool gliding;
+    bool mute;
     float slide_angle;
     KinematicBody* player;
     Label* token_counter;
@@ -44,6 +45,7 @@ private:
     RayCast* ray5;
     AudioStreamPlayer* token_audio;
     AudioStreamPlayer* damage_audio;
+    AudioStreamPlayer* bgm_audio;
     Input* input;
 
 

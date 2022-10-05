@@ -20,6 +20,7 @@ void Player::_register_methods()
     register_property<Player, float>("Gravity", &Player::gravity, 9.8);
     register_property<Player, float>("Jump Height", &Player::jump, 10);
     register_property<Player, float>("Slide Angle", &Player::slide_angle, 0.785398);
+    register_property<Player, bool>("Mute Audio", &Player::mute, false);
 }
 
 void Player::_init() 
@@ -32,6 +33,7 @@ void Player::_init()
     can_grab_ledge = true;
     jumped_twice = false;
     gliding = false;
+    mute = false;
 }
 
 void Player::_ready() 
@@ -49,6 +51,9 @@ void Player::_ready()
     hp_gauge = Object::cast_to<TextureProgress>(Node::get_node("/root/Level/Player/GUI/Bars/HealthBar/Gauge"));
     token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/TokenAudio"));
     damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/DamageAudio"));
+    bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/BackgroundAudio"));
+    bgm_audio->play();
+    bgm_audio->set_stream_paused(mute);
 }
 
 bool Player::is_on_ledge(){ 
@@ -68,6 +73,11 @@ void Player::_process(float delta)
     }
     else {
         process_on_air();
+    }
+
+    if (input->is_action_just_pressed("mute")) {
+        mute = !mute;
+        bgm_audio->set_stream_paused(mute);
     }
 
     // Processes that will always affect the player no matter their state:
@@ -115,7 +125,9 @@ void Player::collision_handler(Area* area)
         godot::String new_count = godot::String(std_string.c_str());
         token_counter->set_text(new_count);
         // 2) Play pickup sound
-        token_audio->play();
+        if (!mute) {
+            token_audio->play();
+        }
         // 3) Delete token from screen
         token->queue_free();
     } else if (spike) {
@@ -127,7 +139,9 @@ void Player::collision_handler(Area* area)
         hp_counter->set_text(new_count);
         hp_gauge->set_value(hp_gauge->get_value() - 5);
         // 2) Play damage sound
-        damage_audio->play();
+        if (!mute) {
+            damage_audio->play();
+        }
         // 3) Delete spike from screen
         spike->queue_free();
     }
