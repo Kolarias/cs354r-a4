@@ -66,6 +66,7 @@ public:
     bool is_on_ledge();
     bool can_mouse_rotate();
     Transform align_with_y(Transform xform, Vector3 new_y);
+    void reset_scene();
 
     void collision_handler(Area* area);
     void process_on_floor();
