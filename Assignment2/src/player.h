@@ -16,6 +16,7 @@ private:
 
     Transform start_pos;
     Vector3 movement;
+    Vector3 air_inertia;
     bool AD_rotate;
     float velocity;
     float gravity;
@@ -24,6 +25,7 @@ private:
     bool can_grab_ledge;
     bool jumped_twice;
     bool gliding;
+    float slide_angle;
     KinematicBody* player;
     RayCast* ray1;
     RayCast* ray2;

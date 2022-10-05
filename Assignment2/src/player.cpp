@@ -16,6 +16,7 @@ void Player::_register_methods()
     register_property<Player, float>("Velocity", &Player::velocity, 0.0);
     register_property<Player, float>("Gravity", &Player::gravity, 9.8);
     register_property<Player, float>("Jump Height", &Player::jump, 10);
+    register_property<Player, float>("Slide Angle", &Player::slide_angle, 0.785398);
 }
 
 void Player::_init() 
@@ -73,13 +74,13 @@ void Player::_process(float delta)
     }
 }
 
-void Player::_physics_process(float delta)
+void Player::_physics_process(float delta) 
 {
     Vector3 direction_vel = Vector3(movement);
     direction_vel.x *= float(velocity);
     direction_vel.z *= float(velocity);
     direction_vel.rotate(Vector3(0,1,0), Spatial::get_rotation().y);
-    move_and_slide(direction_vel, Vector3::UP);
+    move_and_slide(direction_vel, Vector3::UP, false, 4, slide_angle, true);
 }
 
 // HELPER TAKEN FROM THIS FORUM POST: https://godotengine.org/qa/132087/how-to-make-the-character-face-the-plane-you-are-climbing-on
@@ -167,6 +168,10 @@ void Player::process_on_floor(){
     if (input->is_action_just_pressed("jump")) {
         movement.y = jump;
     }
+    // this is supposed to help with walking on an angle, for some reason it breaks jumping, like it seems that some times we never fully touch the ground.
+    // else if (movement.y < 0){
+    //     movement.y = 0;
+    // }
 }
 
 // Function that process user input when player is on the air
@@ -206,14 +211,17 @@ void Player::process_on_ledge(){
     gliding = false;
     wasd_movement(false);
     // Ledge Key
-    if (input->is_action_just_pressed("ledge")) {
+    if (input->is_action_just_pressed("ledge") || input->is_action_just_pressed("jump")) {
         on_ledge = false;
         can_grab_ledge = false;
-    }
-    else if (input->is_action_just_pressed("jump")) {
-        movement.y = jump;
-        on_ledge = false;
-        can_grab_ledge = false;
+
+        Vector3 rotation_degrees = Vector3();
+        rotation_degrees.y = get_rotation_degrees().y;
+        set_rotation_degrees(rotation_degrees);
+
+        if (input->is_action_just_pressed("jump")){
+            movement.y = jump;
+        }
     }
 }
 
