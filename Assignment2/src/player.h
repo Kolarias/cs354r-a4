@@ -9,6 +9,7 @@
 #include <Label.hpp>
 #include <TextureProgress.hpp>
 #include <AudioStreamPlayer.hpp>
+#include <SceneTree.hpp>
 
 #include <string>
 
@@ -27,6 +28,7 @@ private:
     float gravity;
     float jump;
     float slide_angle;
+    bool mute;
 
     // Non-editable in Godot editor
     Transform start_pos;
@@ -37,7 +39,6 @@ private:
     bool can_grab_ledge;
     bool jumped_twice;
     bool gliding;
-
     Label* token_counter;
     Label* hp_counter;
     TextureProgress* hp_gauge;
@@ -49,6 +50,7 @@ private:
     RayCast* ray5;
     AudioStreamPlayer* token_audio;
     AudioStreamPlayer* damage_audio;
+    AudioStreamPlayer* bgm_audio;
     Input* input;
 
 
@@ -66,7 +68,6 @@ public:
     Transform align_with_y(Transform xform, Vector3 new_y);
 
     void collision_handler(Area* area);
-    void spike_handler(Node* body);
     void process_on_floor();
     void process_on_air();
     void process_on_ledge();
