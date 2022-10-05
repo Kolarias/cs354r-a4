@@ -22,13 +22,16 @@ private:
 
     Transform start_pos;
     Vector3 movement;
-    Vector3 fall_vec;
+    Vector3 air_inertia;
     bool AD_rotate;
     float velocity;
     float gravity;
     float jump;
     bool on_ledge;
     bool can_grab_ledge;
+    bool jumped_twice;
+    bool gliding;
+    float slide_angle;
     KinematicBody* player;
     Label* token_counter;
     Label* hp_counter;
@@ -41,6 +44,8 @@ private:
     RayCast* ray5;
     AudioStreamPlayer* token_audio;
     AudioStreamPlayer* damage_audio;
+    Input* input;
+
 
 public:
 
@@ -57,6 +62,10 @@ public:
 
     void collision_handler(Area* area);
     void spike_handler(Node* body);
+    void process_on_floor();
+    void process_on_air();
+    void process_on_ledge();
+    void wasd_movement(bool on_air);
 };
 }
 
