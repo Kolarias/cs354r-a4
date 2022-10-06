@@ -22,6 +22,8 @@ void Player::_register_methods()
     register_property<Player, float>("Jump Height", &Player::jump, 10);
     register_property<Player, float>("Slide Angle", &Player::slide_angle, 0.785398);
     register_property<Player, bool>("Mute Audio", &Player::mute, false);
+    register_property<Player, int>("Spike Damage", &Player::spike_damage, 5);
+    register_property<Player, int>("Token Increment", &Player::token_increment, 1);
 }
 
 void Player::_init() 
@@ -35,6 +37,8 @@ void Player::_init()
     jumped_twice = false;
     gliding = false;
     mute = false;
+    spike_damage = 5;
+    token_increment = 1;
 }
 
 void Player::_ready() 
@@ -132,11 +136,10 @@ void Player::collision_handler(Area* area)
 {
     Token::Token* token = Object::cast_to<Token::Token>(area);
     Spike::Spike* spike = Object::cast_to<Spike::Spike>(area);
-    int damage_val = 5;
     if (token) {
         // 1) Update token counter on GUI
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
-        curr_count += 1;
+        curr_count += token_increment;
         std::string std_string = std::to_string(curr_count);
         godot::String new_count = godot::String(std_string.c_str());
         token_counter->set_text(new_count);
@@ -149,7 +152,7 @@ void Player::collision_handler(Area* area)
     } else if (spike) {
         // 1) Decrease health counter on GUI and gauge
         int curr_count = stoi(hp_counter->get_text().utf8().get_data());
-        curr_count -= damage_val;
+        curr_count -= spike_damage;
         if (curr_count == 0) {
             // died; reset scene
             reset_scene();
@@ -157,7 +160,7 @@ void Player::collision_handler(Area* area)
             std::string std_string = std::to_string(curr_count);
             godot::String new_count = godot::String(std_string.c_str());
             hp_counter->set_text(new_count);
-            hp_gauge->set_value(hp_gauge->get_value() - damage_val);
+            hp_gauge->set_value(hp_gauge->get_value() - spike_damage);
             spike->queue_free();
         }
         // 2) Play damage sound

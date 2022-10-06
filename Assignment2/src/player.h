@@ -29,6 +29,8 @@ private:
     float jump;
     float slide_angle;
     bool mute;
+    int spike_damage;
+    int token_increment;
 
     // Non-editable in Godot editor
     Transform start_pos;
