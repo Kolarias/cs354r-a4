@@ -51,6 +51,9 @@ private:
     AudioStreamPlayer* token_audio;
     AudioStreamPlayer* damage_audio;
     AudioStreamPlayer* bgm_audio;
+    AudioStreamPlayer* jump_audio;
+    AudioStreamPlayer* glide_audio;
+    AudioStreamPlayer* ledge_audio;
     Input* input;
 
 

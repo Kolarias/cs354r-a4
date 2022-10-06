@@ -53,6 +53,9 @@ void Player::_ready()
     token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/TokenAudio"));
     damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/DamageAudio"));
     bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/BackgroundAudio"));
+    jump_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/JumpAudio"));
+    glide_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/GlideAudio"));
+    ledge_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/LedgeAudio"));
     bgm_audio->play();
     bgm_audio->set_stream_paused(mute);
 }
@@ -210,6 +213,7 @@ void Player::process_on_floor(){
     can_grab_ledge = true; 
     jumped_twice = false;
     gliding = false;
+    glide_audio->stop();
 
     wasd_movement(false);
 
@@ -230,6 +234,9 @@ void Player::process_on_floor(){
             if (ray1->is_colliding()) {
                 player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
                 on_ledge = true;
+                if (!mute) {
+                    ledge_audio->play();
+                }
                 movement = Vector3();
             } else {
                 player->rotate_y(-M_PI);
@@ -240,6 +247,9 @@ void Player::process_on_floor(){
 
     // Jump
     if (input->is_action_just_pressed("jump")) {
+        if (!mute) {
+            jump_audio->play();
+        }
         movement.y = jump;
     }
     else if (movement.y < -0.1){
@@ -250,19 +260,26 @@ void Player::process_on_floor(){
 // Function that process user input when player is on the air
 void Player::process_on_air(){
     if (input->is_action_just_pressed("glide")){
+        gliding = true;
+        if (!mute) {
+            glide_audio->play();
+        }
         if (movement.y > 0){
             movement.y = 0;
         }
     }
     if (input->is_action_pressed("glide")){
-        gliding = true;
         movement.x = 1;
     }
     else {
         gliding = false;
+        glide_audio->stop();
         // Double Jump
         if (input->is_action_just_pressed("jump") & !jumped_twice){
             // adjusted double jump - this can be changed so both jumps are of equal height
+            if (!mute) {
+                jump_audio->play();
+            }
             movement.y = jump * 0.75;
             jumped_twice = true;
         }
@@ -272,6 +289,11 @@ void Player::process_on_air(){
     // Check for ledge
     if (ray1->is_colliding() && !ray2->is_colliding() && (ray3->is_colliding() || ray4->is_colliding()) && can_grab_ledge) {
         on_ledge = true;
+        gliding = false;
+        glide_audio->stop();
+        if (!mute) {
+            ledge_audio->play();
+        }
         Vector3 new_position = Vector3(ray1->get_collision_point().x, 
             player->get_translation().y, ray1->get_collision_point().z);
         player->set_translation(new_position);
