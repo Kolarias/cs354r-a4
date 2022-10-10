@@ -30,8 +30,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -83.5
-margin_top = -89.0
+margin_top = -139.0
 margin_right = 83.5
+margin_bottom = -47.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -40,12 +41,27 @@ __meta__ = {
 margin_right = 167.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( -149, 399 )
-text = "Start"
+text = "Singleplayer"
 
-[node name="Quit" type="Button" parent="VBoxContainer"]
+[node name="Host" type="Button" parent="VBoxContainer"]
 margin_top = 24.0
 margin_right = 167.0
 margin_bottom = 44.0
+text = "Host Game"
+
+[node name="Join" type="Button" parent="VBoxContainer"]
+margin_top = 48.0
+margin_right = 167.0
+margin_bottom = 68.0
+text = "Join Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 167.0
+margin_bottom = 92.0
 rect_pivot_offset = Vector2( -149, 399 )
 text = "Quit"
 __meta__ = {
