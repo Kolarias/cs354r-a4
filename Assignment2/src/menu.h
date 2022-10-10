@@ -26,6 +26,8 @@ public:
     void _process(float delta);
 
     void _on_start_pressed();
+    void _on_host_pressed();
+    void _on_join_pressed();
     void _on_quit_pressed();
 };
 }
