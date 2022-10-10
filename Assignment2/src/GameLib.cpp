@@ -2,6 +2,7 @@
 #include <playercam.h>
 #include <token.h>
 #include <spike.h>
+#include <menu.h>
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
     godot::Godot::gdnative_init(o);
@@ -18,4 +19,5 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     godot::register_class<PlayerCam::PlayerCam>();
     godot::register_class<Token::Token>();
     godot::register_class<Spike::Spike>();
+    godot::register_class<Menu::Menu>();
 }

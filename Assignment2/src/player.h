@@ -22,13 +22,10 @@ class Player : public KinematicBody
 private:
 
     // Editable in Godot editor
-    bool AD_rotate;
-    bool mouse_rotate;
     float velocity;
     float gravity;
     float jump;
     float slide_angle;
-    bool mute;
     int spike_damage;
     int token_increment;
 
@@ -36,7 +33,6 @@ private:
     Transform start_pos;
     KinematicBody* player;
     Vector3 movement;
-
     bool on_ledge;
     bool can_grab_ledge;
     bool jumped_twice;
@@ -60,6 +56,10 @@ private:
 
 
 public:
+    // Editable in Godot editor
+    bool AD_rotate;
+    bool mouse_rotate;
+    bool mute;
 
     static void _register_methods();
 

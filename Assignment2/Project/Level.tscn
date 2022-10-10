@@ -20,8 +20,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.02941, 0 )
 Velocity = 7.0
 "Slide Angle" = 1.5
 "Mute Audio" = true
-"Spike Damage" = 50
-"Token Increment" = 20
+"Spike Damage" = 10
 
 [node name="Pivot" type="Spatial" parent="Player"]
 
