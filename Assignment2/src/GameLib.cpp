@@ -3,6 +3,7 @@
 #include <token.h>
 #include <spike.h>
 #include <menu.h>
+#include <pausemenu.h>
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
     godot::Godot::gdnative_init(o);
@@ -20,4 +21,5 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
     godot::register_class<Token::Token>();
     godot::register_class<Spike::Spike>();
     godot::register_class<Menu::Menu>();
+    godot::register_class<PauseMenu::PauseMenu>();
 }
