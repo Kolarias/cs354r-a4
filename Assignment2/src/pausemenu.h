@@ -36,6 +36,7 @@ public:
     void _on_resume_pressed();
     void _on_main_menu_pressed();
     void _on_quit_pressed();
+    void handle_music();
 };
 }
 

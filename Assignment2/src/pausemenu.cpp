@@ -15,32 +15,37 @@ void PauseMenu::_register_methods()
 
 void PauseMenu::_init() 
 {
-    input = Input::get_singleton();
     isPaused = false;
 }
 
 void PauseMenu::_ready() 
 {
     pauseMenu = Object::cast_to<Control>(Node::get_node("/root/Level/PauseMenu"));
+
     Button* resume_button = Object::cast_to<Button>(Node::get_node("/root/Level/PauseMenu/CenterContainer/VBoxContainer/Resume"));
     Button* main_menu_button = Object::cast_to<Button>(Node::get_node("/root/Level/PauseMenu/CenterContainer/VBoxContainer/MainMenu"));
     Button* quit_button = Object::cast_to<Button>(Node::get_node("/root/Level/PauseMenu/CenterContainer/VBoxContainer/Quit"));
     resume_button->connect("pressed", pauseMenu, "_on_resume_pressed");
     main_menu_button->connect("pressed", pauseMenu, "_on_main_menu_pressed");
     quit_button->connect("pressed", pauseMenu, "_on_quit_pressed");
-    Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"))->connect("input_event", pauseMenu, "_input");
+
+    // I don't know if this is necessary:
+    // Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"))->connect("input_event", pauseMenu, "_input");
 }
 
 void PauseMenu::_process(float delta)
 {
 }
 
-void PauseMenu::_input(InputEvent* event) 
+void PauseMenu::_input(InputEvent* event)
 {
-    if (input->is_action_just_pressed("pause")) {
+    if (event->is_action_pressed("pause")) {
         isPaused = !isPaused;
         get_tree()->set_pause(isPaused);
         pauseMenu->set_visible(isPaused);
+        if(!isPaused){
+            handle_music();
+        }
     }
 }
 
@@ -49,10 +54,21 @@ void PauseMenu::_on_resume_pressed()
     isPaused = !isPaused;
     get_tree()->set_pause(isPaused);
     pauseMenu->set_visible(isPaused);
+    if (!isPaused){
+        handle_music();
+    }
+}
+
+void PauseMenu::handle_music(){
+    AudioStreamPlayer* bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/BackgroundAudio"));
+    Player::Player *player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
+    bgm_audio->set_stream_paused(player->mute);
 }
 
 void PauseMenu::_on_main_menu_pressed() 
 {
+    isPaused = !isPaused;
+    get_tree()->set_pause(isPaused);
     get_tree()->change_scene("res://Menu.tscn");
 }
 
