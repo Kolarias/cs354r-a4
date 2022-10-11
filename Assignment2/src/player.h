@@ -10,7 +10,6 @@
 #include <TextureProgress.hpp>
 #include <AudioStreamPlayer.hpp>
 #include <SceneTree.hpp>
-
 #include <string>
 
 namespace Player 
