@@ -40,6 +40,8 @@ void PauseMenu::_process(float delta)
 void PauseMenu::_input(InputEvent* event)
 {
     if (event->is_action_pressed("pause")) {
+        input = Input::get_singleton();
+        input->set_mouse_mode(input->MOUSE_MODE_VISIBLE);
         isPaused = !isPaused;
         get_tree()->set_pause(isPaused);
         pauseMenu->set_visible(isPaused);
@@ -51,16 +53,18 @@ void PauseMenu::_input(InputEvent* event)
 
 void PauseMenu::_on_resume_pressed() 
 {
+    input = Input::get_singleton();
     isPaused = !isPaused;
     get_tree()->set_pause(isPaused);
     pauseMenu->set_visible(isPaused);
     if (!isPaused){
         handle_music();
     }
+    input->set_mouse_mode(input->MOUSE_MODE_CAPTURED);
 }
 
 void PauseMenu::handle_music(){
-    AudioStreamPlayer* bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/BackgroundAudio"));
+    AudioStreamPlayer* bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/BackgroundAudio"));
     Player::Player *player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     bgm_audio->set_stream_paused(player->mute);
 }

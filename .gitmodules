@@ -2,3 +2,7 @@
 	path = Assignment2/godot-cpp
 	url = https://github.com/godotengine/godot-cpp
 	branch = 3.x
+[submodule "Assignment4/godot-cpp"]
+	path = Assignment4/godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+	branch = 3.x

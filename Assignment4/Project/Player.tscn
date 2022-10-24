@@ -1,8 +1,14 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://bin/player.gdns" type="Script" id=1]
-[ext_resource path="res://bin/playercam.gdns" type="Script" id=2]
+[ext_resource path="res://assets/bgm.wav" type="AudioStream" id=2]
 [ext_resource path="res://GUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/coin.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/snap.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/damage.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/wind.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/jump.wav" type="AudioStream" id=8]
+[ext_resource path="res://bin/playercam.gdns" type="Script" id=9]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -12,6 +18,10 @@
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
+"Mouse Rotate" = true
+Velocity = 10.0
+"Slide Angle" = 1.0
+"Spike Damage" = 10
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
@@ -41,11 +51,10 @@ material/0 = null
 
 [node name="Pivot" type="Spatial" parent="."]
 transform = Transform( 0.901417, 0.432951, 0, -0.432951, 0.901417, 0, 0, 0, 1, 0, 0, 0 )
+script = ExtResource( 9 )
 
 [node name="Camera" type="Camera" parent="Pivot"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -8, 0, 0 )
-script = ExtResource( 2 )
-mouse_sensitivity = 0.05
 
 [node name="CamCollider" type="RayCast" parent="Pivot"]
 enabled = true
@@ -76,4 +85,25 @@ cast_to = Vector3( 2, 0, 0 )
 [node name="FloorCollider1" type="RayCast" parent="."]
 transform = Transform( 0.737277, 0.67559, 0, -0.67559, 0.737277, 0, 0, 0, 1, 0, 0, 0 )
 enabled = true
-cast_to = Vector3( 1.75, 0, 0 )
+cast_to = Vector3( 3, 0, 0 )
+
+[node name="DamageAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 3.0
+
+[node name="BackgroundAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -15.0
+
+[node name="TokenAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -5.0
+
+[node name="JumpAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="GlideAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="LedgeAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )

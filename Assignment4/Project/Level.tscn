@@ -1,0 +1,319 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Floor.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Token.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Spike.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Platform.tscn" type="PackedScene" id=10]
+[ext_resource path="res://PauseMenu.tscn" type="PackedScene" id=11]
+
+[node name="Level" type="Node"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
+
+[node name="PauseMenu" parent="." instance=ExtResource( 11 )]
+visible = false
+
+[node name="Floor" parent="." instance=ExtResource( 7 )]
+transform = Transform( -100, 1.50996e-07, 0, -1.50996e-05, -1, 0, 0, 0, 66.2857, 0.175711, 0.0757275, 25.8137 )
+
+[node name="Platforms" type="Node" parent="."]
+
+[node name="Platform" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 10, 5, 10 )
+
+[node name="Platform8" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, -2.7981, 9.9548, 10 )
+
+[node name="Platform2" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 10, 0, 0, 0, -6.9064e-08, 12.307, 0, -1.58, -5.37956e-07, -10.2531, 3.60787, 30.7302 )
+
+[node name="Platform10" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 10, 0, 0, 0, 0.408934, 11.8876, 0, -1.52616, 3.18528, -30.0203, 3.60787, 30.7302 )
+
+[node name="Platform11" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 10, 0, 0, 0, 0.79, 10.6582, 0, -1.36832, 6.1535, -50.3829, 3.60787, 30.7302 )
+
+[node name="Platform12" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 10, 0, 0, 0, 1.11723, 8.70236, 0, -1.11723, 8.70236, -70.8202, 3.60787, 30.7302 )
+
+[node name="Platform13" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 10, 0, 0, 0, 1.36832, 6.1535, 0, -0.79, 10.6582, -90.9976, 3.60787, 30.7302 )
+
+[node name="Platform14" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( -4.37114e-07, 0.408934, -11.8876, 0, 1.52616, 3.18529, 10, 1.78751e-08, -5.19626e-07, -104.871, 3.60787, 9.17772 )
+
+[node name="Platform6" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 19.3983, -0.261017, 27.6022, 0, 1.51368, 14.3346, -13.6769, -0.370208, 39.1489, 49.3693, 3.31711, 4.38636 )
+
+[node name="Platform7" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 7.60581, 0.429085, -13.6125, 0, 1.51368, 4.30037, 22.4834, -0.145154, 4.60493, 57.3378, 22.3649, 78.2264 )
+
+[node name="Platform3" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 4.1636, 15.8078, 0.000297546 )
+
+[node name="Platform4" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 15, 25, 20, 10 )
+
+[node name="Platform5" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 15, 24.9289, 23, 9.93433 )
+
+[node name="Platform15" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 15, 24.9289, 11.0451, -49.9187 )
+
+[node name="Platform9" parent="Platforms" instance=ExtResource( 10 )]
+transform = Transform( -2.18557e-07, 0, 50, 0, 1, 0, -5, 0, -2.18557e-06, -53.4175, 6.68355, 77.0154 )
+
+[node name="Tokens" type="Node" parent="."]
+
+[node name="Token" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, 5.536, 19.0961, 0 )
+
+[node name="Token2" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -0.00135263, -0.499993, 0, 0.249996, -0.00270527, 23.5799, 3.77555, 0 )
+
+[node name="Token3" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -89.6951, 8.69498, 78.5967 )
+
+[node name="Token4" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -84.6718, 8.69498, 78.5967 )
+
+[node name="Token5" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -79.033, 8.69498, 78.5967 )
+
+[node name="Token6" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -72.0009, 8.69498, 78.5967 )
+
+[node name="Token7" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -63.644, 8.69498, 78.5967 )
+
+[node name="Token8" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -54.934, 8.69498, 78.5967 )
+
+[node name="Token9" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -46.3906, 8.69498, 78.5967 )
+
+[node name="Token10" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -37.8122, 8.69498, 78.5967 )
+
+[node name="Token11" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -29.6978, 8.69498, 78.5967 )
+
+[node name="Token12" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -20.7945, 8.69498, 78.5967 )
+
+[node name="Token13" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -89.6951, 3.02698, 1.82831 )
+
+[node name="Token14" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -84.6718, 3.02698, 1.82831 )
+
+[node name="Token15" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -79.033, 3.02698, 1.82831 )
+
+[node name="Token16" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -72.0009, 3.02698, 1.82831 )
+
+[node name="Token17" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -63.644, 3.02698, 1.82831 )
+
+[node name="Token18" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -54.934, 3.02698, 1.82831 )
+
+[node name="Token19" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -46.3906, 3.02698, 1.82831 )
+
+[node name="Token20" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -37.8122, 3.02698, 1.82831 )
+
+[node name="Token21" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -29.6978, 3.02698, 1.82831 )
+
+[node name="Token22" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.25, 0, 0, 0, -1.09278e-08, -0.5, 0, 0.25, -2.18557e-08, -20.7945, 3.02698, 1.82831 )
+
+[node name="Token23" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 19.5734, 19.7275, -32.4058 )
+
+[node name="Token24" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 20.1353, 20.6346, -27.414 )
+
+[node name="Token25" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 20.7634, 22.0388, -21.8316 )
+
+[node name="Token26" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 21.5525, 23.8178, -14.8227 )
+
+[node name="Token27" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 22.4872, 25.4453, -6.51825 )
+
+[node name="Token28" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 23.4615, 25.4453, 2.13712 )
+
+[node name="Token29" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 24.417, 25.4453, 10.6269 )
+
+[node name="Token30" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 25.3765, 25.4453, 19.1515 )
+
+[node name="Token31" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 26.2841, 25.4453, 27.215 )
+
+[node name="Token32" parent="Tokens" instance=ExtResource( 8 )]
+transform = Transform( 0.0279626, -0.248431, 2.17186e-08, 0, -1.09278e-08, -0.5, 0.248431, 0.0279626, -2.44457e-09, 27.28, 25.4453, 36.0624 )
+
+[node name="Spikes" type="Node" parent="."]
+
+[node name="Spike" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 4.99813, 3, -12.2212 )
+
+[node name="Spike3" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 4.99813, 3, -17.187 )
+
+[node name="Spike4" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 4.99813, 3, -22.1915 )
+
+[node name="Spike5" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 4.99813, 3, -26.3178 )
+
+[node name="Spike6" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 4.99813, 3, -31.3738 )
+
+[node name="Spike7" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 0.309994, 3, -12.2212 )
+
+[node name="Spike8" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 0.309994, 3, -17.187 )
+
+[node name="Spike9" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 0.309994, 3, -22.1915 )
+
+[node name="Spike10" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 0.309994, 3, -26.3178 )
+
+[node name="Spike11" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 0.309994, 3, -31.3738 )
+
+[node name="Spike12" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -3.49378, 3, -12.2212 )
+
+[node name="Spike13" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -3.49378, 3, -17.187 )
+
+[node name="Spike14" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -3.49378, 3, -22.1915 )
+
+[node name="Spike15" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -3.49378, 3, -26.3178 )
+
+[node name="Spike16" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -3.49378, 3, -31.3738 )
+
+[node name="Spike17" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 9.38155, 3, -12.2212 )
+
+[node name="Spike18" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 9.38155, 3, -17.187 )
+
+[node name="Spike19" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 9.38155, 3, -22.1915 )
+
+[node name="Spike20" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 9.38155, 3, -26.3178 )
+
+[node name="Spike21" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 9.38155, 3, -31.3738 )
+
+[node name="Spike22" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -7.94545, 3, -12.2212 )
+
+[node name="Spike23" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -7.94545, 3, -17.187 )
+
+[node name="Spike24" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -7.94545, 3, -22.1915 )
+
+[node name="Spike25" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -7.94545, 3, -26.3178 )
+
+[node name="Spike26" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, -7.94545, 3, -31.3738 )
+
+[node name="Spike27" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 61.0431, 15.3822, 30.8479 )
+
+[node name="Spike28" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 58.1492, 14.2752, 26.9673 )
+
+[node name="Spike29" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 55.2326, 13.1596, 23.0565 )
+
+[node name="Spike30" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 52.8279, 12.2398, 19.832 )
+
+[node name="Spike31" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 49.8813, 11.1127, 15.881 )
+
+[node name="Spike32" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 57.2339, 16.2006, 33.4552 )
+
+[node name="Spike33" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 54.3399, 15.0937, 29.5747 )
+
+[node name="Spike34" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 51.4234, 13.9781, 25.6639 )
+
+[node name="Spike35" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 49.0186, 13.0583, 22.4394 )
+
+[node name="Spike36" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 46.0721, 11.9312, 18.4883 )
+
+[node name="Spike37" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 54.1432, 16.8647, 35.5707 )
+
+[node name="Spike38" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 51.2492, 15.7577, 31.6902 )
+
+[node name="Spike39" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 48.3327, 14.6421, 27.7794 )
+
+[node name="Spike40" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 45.928, 13.7223, 24.5549 )
+
+[node name="Spike41" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 42.9814, 12.5952, 20.6038 )
+
+[node name="Spike42" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 64.6048, 14.6169, 28.41 )
+
+[node name="Spike43" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 61.7109, 13.51, 24.5295 )
+
+[node name="Spike44" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 58.7943, 12.3944, 20.6187 )
+
+[node name="Spike45" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 56.3896, 11.4746, 17.3941 )
+
+[node name="Spike46" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 53.443, 10.3475, 13.4431 )
+
+[node name="Spike47" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 50.5261, 17.6418, 38.0466 )
+
+[node name="Spike48" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 47.6321, 16.5349, 34.166 )
+
+[node name="Spike49" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 44.7156, 15.4193, 30.2553 )
+
+[node name="Spike50" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 42.3108, 14.4995, 27.0307 )
+
+[node name="Spike51" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.203133, 0.0248948, 0.145696, -0.0436444, 1.91816, 0.055729, -0.13904, -0.565735, 0.195364, 39.3642, 13.3724, 23.0797 )
+
+[node name="Spike2" parent="Spikes" instance=ExtResource( 9 )]
+transform = Transform( 0.25, 0, 0, 0, 2, 0, 0, 0, 0.25, 5.8387, 8.03846, 10.2272 )

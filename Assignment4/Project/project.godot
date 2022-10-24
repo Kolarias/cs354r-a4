@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="Assignment2"
+config/name="Assignment4"
 run/main_scene="res://Menu.tscn"
 config/icon="res://icon.png"
 

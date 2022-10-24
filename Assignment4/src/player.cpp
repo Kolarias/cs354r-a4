@@ -54,12 +54,12 @@ void Player::_ready()
     token_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/TokenCounter/Tokens/Background/Number"));
     hp_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Player/GUI/Bars/HealthBar/HP/Background/Number"));
     hp_gauge = Object::cast_to<TextureProgress>(Node::get_node("/root/Level/Player/GUI/Bars/HealthBar/Gauge"));
-    token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/TokenAudio"));
-    damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/DamageAudio"));
-    bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/BackgroundAudio"));
-    jump_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/JumpAudio"));
-    glide_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/GlideAudio"));
-    ledge_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/LedgeAudio"));
+    token_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/TokenAudio"));
+    damage_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/DamageAudio"));
+    bgm_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/BackgroundAudio"));
+    jump_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/JumpAudio"));
+    glide_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/GlideAudio"));
+    ledge_audio = Object::cast_to<AudioStreamPlayer>(Node::get_node("/root/Level/Player/LedgeAudio"));
     bgm_audio->play();
     bgm_audio->set_stream_paused(mute);
 }
