@@ -2,15 +2,15 @@
 1) Clone the repository with: 
 ```
 Graders:
-$ git clone --recurse-submodules -j8 -b codefreeze https://github.com/FelipePazS/cs354r-a2.git
+$ git clone --recurse-submodules -j8 -b codefreeze https://github.com/Kolarias/cs354r-a3.git
 Everyone else:
-$ git clone --recurse-submodules -j8 https://github.com/FelipePazS/cs354r-a2.git
+$ git clone --recurse-submodules -j8 https://github.com/Kolarias/cs354r-a3.git
 ```
 This clones my repository and the submodule godot-cpp and that submodule's submodule godot-headers. For graders, you clone specifically the codefreeze branch.
 
 2) Run: 
 ```
-$ cd cs354r-a2/Assignment2/godot-cpp
+$ cd cs354r-a4/Assignment4/godot-cpp
 ```
 3) From within godot-cpp, we will need to generate the godot-cpp bindings. Run:
 ```
@@ -25,4 +25,4 @@ $ python3 /usr/bin/scons platform=linux
 ```
 Again, replace 'linux' if needed. Again, use the alias if you have it.
 
-5) Import Assignment2/Project/project.godot into Godot and you can run the project!
+5) Import Assignment4/Project/project.godot into Godot and you can run the project!
