@@ -2,9 +2,9 @@
 1) Clone the repository with: 
 ```
 Graders:
-$ git clone --recurse-submodules -j8 -b codefreeze https://github.com/Kolarias/cs354r-a3.git
+$ git clone --recurse-submodules -j8 -b codefreeze https://github.com/Kolarias/cs354r-a4.git
 Everyone else:
-$ git clone --recurse-submodules -j8 https://github.com/Kolarias/cs354r-a3.git
+$ git clone --recurse-submodules -j8 https://github.com/Kolarias/cs354r-a4.git
 ```
 This clones my repository and the submodule godot-cpp and that submodule's submodule godot-headers. For graders, you clone specifically the codefreeze branch.
 
