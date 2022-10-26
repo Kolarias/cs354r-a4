@@ -1,0 +1,98 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://bin/ally.gdns" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+
+[sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="PrismMesh" id=3]
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="ViewportTexture" id=4]
+viewport_path = NodePath("TextLabel/Viewport")
+
+[sub_resource type="ViewportTexture" id=5]
+viewport_path = NodePath("TokensLabel/Viewport")
+
+[node name="Ally" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 8 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="CollisionShape"]
+transform = Transform( 0.433013, -0.25, 0, 0.25, 0.433013, 0, 0, 0, 0.5, 0.849737, 0.85124, 0 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 9 )
+
+[node name="AllyArea" type="Area" parent="."]
+
+[node name="CollisionShape2" type="CollisionShape" parent="AllyArea"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="AllyArea/CollisionShape2"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 6 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="AllyArea/CollisionShape2"]
+transform = Transform( 0.433013, -0.25, 0, 0.25, 0.433013, 0, 0, 0, 0.5, 0.849737, 0.85124, 0 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 7 )
+
+[node name="TextLabel" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65486, 0 )
+
+[node name="Viewport" type="Viewport" parent="TextLabel"]
+size = Vector2( 300, 25 )
+transparent_bg = true
+
+[node name="Text" type="Label" parent="TextLabel/Viewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Tokens:"
+align = 1
+valign = 1
+
+[node name="Sprite3D" type="Sprite3D" parent="TextLabel"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.132319, 0 )
+flip_v = true
+pixel_size = 0.02
+billboard = 2
+texture = SubResource( 4 )
+
+[node name="TokensLabel" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49165, 0 )
+
+[node name="Viewport" type="Viewport" parent="TokensLabel"]
+size = Vector2( 300, 25 )
+transparent_bg = true
+
+[node name="Tokens" type="Label" parent="TokensLabel/Viewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+align = 1
+valign = 1
+
+[node name="Sprite3D" type="Sprite3D" parent="TokensLabel"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00681067, 0 )
+flip_v = true
+pixel_size = 0.02
+billboard = 2
+texture = SubResource( 5 )

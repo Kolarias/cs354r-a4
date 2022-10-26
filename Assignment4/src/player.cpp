@@ -3,6 +3,8 @@
 #include "KinematicCollision.hpp"
 #include "token.h"
 #include "spike.h"
+#include "enemy.h"
+#include "ally.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -291,18 +293,23 @@ void Player::process_on_air(){
 
     // Check for ledge
     if (ray1->is_colliding() && !ray2->is_colliding() && (ray3->is_colliding() || ray4->is_colliding()) && can_grab_ledge) {
-        on_ledge = true;
-        gliding = false;
-        glide_audio->stop();
-        if (!mute) {
-            ledge_audio->play();
+        // Don't ledge snap to allies or enemies!
+        Ally::Ally* obj1 = Object::cast_to<Ally::Ally>(ray1->get_collider());
+        Enemy::Enemy* obj2 = Object::cast_to<Enemy::Enemy>(ray1->get_collider());
+        if (!obj1 && !obj2) {
+            on_ledge = true;
+            gliding = false;
+            glide_audio->stop();
+            if (!mute) {
+                ledge_audio->play();
+            }
+            Vector3 new_position = Vector3(ray1->get_collision_point().x, 
+                player->get_translation().y, ray1->get_collision_point().z);
+            player->set_translation(new_position);
+            // Figuring out the right math to align to ledges took a looooong time lmao
+            player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
+            movement = Vector3();
         }
-        Vector3 new_position = Vector3(ray1->get_collision_point().x, 
-            player->get_translation().y, ray1->get_collision_point().z);
-        player->set_translation(new_position);
-        // Figuring out the right math to align to ledges took a looooong time lmao
-        player->set_transform(align_with_y(player->get_transform(), (ray1->get_collision_normal())));
-        movement = Vector3();
     }
 }
 

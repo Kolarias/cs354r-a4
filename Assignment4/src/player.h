@@ -22,11 +22,6 @@ private:
 
     // Editable in Godot editor
     float velocity;
-    float gravity;
-    float jump;
-    float slide_angle;
-    int spike_damage;
-    int token_increment;
 
     // Non-editable in Godot editor
     Transform start_pos;
@@ -59,6 +54,11 @@ public:
     bool AD_rotate;
     bool mouse_rotate;
     bool mute;
+    float gravity;
+    float jump;
+    float slide_angle;
+    int spike_damage;
+    int token_increment;
 
     static void _register_methods();
 
