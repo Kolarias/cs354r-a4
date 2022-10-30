@@ -23,6 +23,8 @@ private:
     float jump;
     float slide_angle;
 
+    int state;
+
     // Editable in the Godot editor
     float velocity;
 

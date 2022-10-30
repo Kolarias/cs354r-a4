@@ -5,6 +5,12 @@
 
 namespace Enemy
 {
+    
+enum enemy_states
+{
+    SEARCHING, ATTACKING, RETREATING
+};
+
 void Enemy::_register_methods()
 {
     register_method("_ready", &Enemy::_ready);
@@ -20,6 +26,7 @@ void Enemy::_init()
     start_pos = get_global_transform();
     movement = Vector3();
     gravity = 9.8;
+    state = SEARCHING;
 }
 
 void Enemy::_ready() 

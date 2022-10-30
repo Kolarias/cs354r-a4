@@ -31,8 +31,6 @@ private:
     bool can_grab_ledge;
     bool jumped_twice;
     bool gliding;
-    Label* token_counter;
-    Label* hp_counter;
     TextureProgress* hp_gauge;
     Area* player_area;
     RayCast* ray1;
@@ -59,6 +57,8 @@ public:
     float slide_angle;
     int spike_damage;
     int token_increment;
+    Label* token_counter;
+    Label* hp_counter;
 
     static void _register_methods();
 
