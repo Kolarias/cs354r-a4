@@ -32,7 +32,7 @@ void Ally::_init()
     movement = Vector3();
     gravity = 9.8;
     token_increment = 1;
-    state = SEARCHING;
+    state = RETURNING;
     found_token = false;
     velocity = 5.0;
 }
@@ -45,6 +45,7 @@ void Ally::_ready()
     ally_area->connect("area_entered", ally, "collision_handler");
     visibility = (Area*)(ally->get_node("Visibility"));
     visibility->connect("area_entered", ally, "visibility_entered");
+    visibility->set_collision_mask(2);
     player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
@@ -109,13 +110,13 @@ void Ally::collision_handler(Area* area)
     // drop off tokens to player
     if (player_node) {
         // 1) Update token counter on GUI
-        token_counter->set_text("0");
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
         int player_token_count = stoi(player->token_counter->get_text().utf8().get_data());
         player_token_count += curr_count;
         std::string std_string = std::to_string(player_token_count);
         godot::String new_count = godot::String(std_string.c_str());
         player->token_counter->set_text(new_count);
+        token_counter->set_text("0");
         state = SEARCHING;
         Godot::print("Ally dropped off tokens");
     }
@@ -139,7 +140,33 @@ void Ally::visibility_entered(Area* area) {
 void Ally::handle_searching()
 {
     // just move in some direction; once a token enters the area for search_handler state will change to collecting
-    movement.x = 1;
+    // maybe move behind player, like following the player and just scan for the closest token.
+
+    // scans for tokens and set the closest one as a goal.
+    Array overlapping_bodies = visibility->get_overlapping_areas();
+    Vector3 current_position = get_translation();
+    int min_dist = 0;
+    Token::Token* token_goal;
+    // iterate over the over the areas
+    for (int i = 0; i < overlapping_bodies.size(); i ++){
+        Token::Token* token = Object::cast_to<Token::Token>(overlapping_bodies[i]);
+        if (token){
+            // get distance to token
+            Vector3 token_pos = token->get_translation();
+            int distance = current_position.distance_to(token_pos);
+            if (distance <= min_dist || min_dist == 0){
+                min_dist = distance;
+                token_goal = token;
+            }
+        }
+    }
+    if (token_goal != nullptr){
+        goal_pos = token_goal->get_translation();
+        state = COLLECTING;
+    }
+    else {
+        goal_pos = player->get_translation();
+    }
 }
 
 void Ally::move_to_goal(){
@@ -148,7 +175,7 @@ void Ally::move_to_goal(){
     Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
     Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
     real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
-    set_rotation(Vector3(0, angle, 0));
+    set_rotation(Vector3(0, angle * 0.5, 0));
     movement.x = 1;
 }
 
