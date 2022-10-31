@@ -27,18 +27,16 @@ private:
 
     int state;
 
-    // Editable in the Godot editor
-    float velocity;
-
     // Non-editable in Godot editor
+    float velocity;
     Transform start_pos;
-    Transform goal_pos;
+    Vector3 goal_pos;
     Player::Player* player;
     KinematicBody* ally;
     Vector3 movement;
     Label* token_counter;
     Area* ally_area;
-    Area* ally_search_area;
+    Area* visibility;
     bool found_token;
 
 public:
@@ -51,7 +49,7 @@ public:
     void _physics_process(float delta);
     
     void collision_handler(Area* area);
-    void search_handler(Area* area);
+    void visibility_entered(Area* area);
     void handle_searching();
     void handle_collecting();
     void handle_returning();

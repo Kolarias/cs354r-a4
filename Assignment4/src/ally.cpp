@@ -3,6 +3,7 @@
 #include "GlobalConstants.hpp"
 #include "KinematicCollision.hpp"
 #include "token.h"
+#include "Navigation.hpp"
 
 namespace Ally
 {
@@ -17,8 +18,10 @@ void Ally::_register_methods()
     register_method("_ready", &Ally::_ready);
     register_method("_process", &Ally::_process);
     register_method("_physics_process", &Ally::_physics_process);
+    register_method("visibility_entered", &Ally::visibility_entered);
+    register_method("collision_handler", &Ally::collision_handler);
 
-    register_property<Ally, float>("Velocity", &Ally::velocity, 5.0);
+
     register_property<Ally, float>("Gravity", &Ally::gravity, 9.8);
     register_property<Ally, int>("Token Increment", &Ally::token_increment, 1);
 }
@@ -31,6 +34,7 @@ void Ally::_init()
     token_increment = 1;
     state = SEARCHING;
     found_token = false;
+    velocity = 5.0;
 }
 
 void Ally::_ready() 
@@ -39,8 +43,8 @@ void Ally::_ready()
     ally = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Ally"));
     ally_area = (Area*)(ally->get_node("AllyArea"));
     ally_area->connect("area_entered", ally, "collision_handler");
-    ally_search_area = (Area*)(ally->get_node("AllySearchArea"));
-    ally_search_area->connect("area_entered", ally, "search_handler");
+    visibility = (Area*)(ally->get_node("Visibility"));
+    visibility->connect("area_entered", ally, "visibility_entered");
     player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
@@ -113,7 +117,7 @@ void Ally::collision_handler(Area* area)
     }
 }
 
-void Ally::search_handler(Area* area) {
+void Ally::visibility_entered(Area* area) {
 
     Token::Token* token = Object::cast_to<Token::Token>(area);
 
@@ -121,7 +125,7 @@ void Ally::search_handler(Area* area) {
         if (token) {
             // only update goal_pos if we haven't found a token yet; don't want to keep updating goal
             // if multiple tokens have entered the area
-            goal_pos = token->get_global_transform();
+            goal_pos = token->get_translation();
             state = COLLECTING;
             Godot::print("Ally found token");
         }
@@ -137,12 +141,20 @@ void Ally::handle_searching()
 void Ally::handle_collecting()
 {
     // orient towards goal_pos
+    Vector3 current_position3d = get_translation();
+    Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
+    Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
+    real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
+    set_rotation(Vector3(0, angle, 0));
+
+    // walk toward goal_pos
+    movement.x = 1;
 }
 
 void Ally::handle_returning()
 {
     // orient towards player and move
-    goal_pos = player->get_global_transform();
+    goal_pos = player->get_translation();
 }
 
 }
