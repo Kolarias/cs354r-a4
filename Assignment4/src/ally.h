@@ -51,8 +51,7 @@ public:
     void collision_handler(Area* area);
     void visibility_entered(Area* area);
     void handle_searching();
-    void handle_collecting();
-    void handle_returning();
+    void move_to_goal();
 };
 }
 

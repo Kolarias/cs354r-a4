@@ -68,11 +68,12 @@ void Ally::_process(float delta)
         handle_searching();
     } else if (state == COLLECTING) {
         // token has entered the area; token is now the goal pos. walk towards the token
-        handle_collecting();
+        move_to_goal();
         // once picking up the token, return to the player
     } else {
         // walk towards player (goal_pos is player).
-        handle_returning();
+        goal_pos = player->get_translation();
+        move_to_goal();
         // once dropped tokens off to player, return to searching
     }
 }
@@ -102,10 +103,13 @@ void Ally::collision_handler(Area* area)
         // 2) Delete token from screen
         token->queue_free();
         state = RETURNING;
+        goal_pos = player->get_translation();
         Godot::print("Ally picked up token");
     }
     // drop off tokens to player
     if (player_node) {
+        // 1) Update token counter on GUI
+        token_counter->set_text("0");
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
         int player_token_count = stoi(player->token_counter->get_text().utf8().get_data());
         player_token_count += curr_count;
@@ -138,23 +142,14 @@ void Ally::handle_searching()
     movement.x = 1;
 }
 
-void Ally::handle_collecting()
-{
+void Ally::move_to_goal(){
     // orient towards goal_pos
     Vector3 current_position3d = get_translation();
     Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
     Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
     real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
     set_rotation(Vector3(0, angle, 0));
-
-    // walk toward goal_pos
     movement.x = 1;
-}
-
-void Ally::handle_returning()
-{
-    // orient towards player and move
-    goal_pos = player->get_translation();
 }
 
 }
