@@ -171,11 +171,15 @@ void Ally::handle_searching()
 
 void Ally::move_to_goal(){
     // orient towards goal_pos
-    Vector3 current_position3d = get_translation();
-    Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
-    Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
-    real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
-    set_rotation(Vector3(0, angle * 0.5, 0));
+    // Vector3 current_position3d = get_translation();
+    // Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
+    // Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
+    // real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
+    // set_rotation(Vector3(0, angle * 0.5, 0));
+    // real_t angle = current_position2d->angle_to_point(*goal_pos2d) * (180 / Math_PI);
+    // set_rotation(Vector3(0, angle * -1 / 2.0, 0));
+    look_at(goal_pos, Vector3::UP);
+    rotate_object_local(Vector3::UP, Math_PI / 2.0);
     movement.x = 1;
 }
 
