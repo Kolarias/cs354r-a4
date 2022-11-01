@@ -178,9 +178,13 @@ void Ally::move_to_goal(){
     // set_rotation(Vector3(0, angle * 0.5, 0));
     // real_t angle = current_position2d->angle_to_point(*goal_pos2d) * (180 / Math_PI);
     // set_rotation(Vector3(0, angle * -1 / 2.0, 0));
+
+    // look at the goal pos - automatically finds the shortest angle path to do thi
     look_at(goal_pos, Vector3::UP);
+    // look_at automatically defines forwards as the -z axis; have to rotate to adjust for this
     rotate_object_local(Vector3::UP, Math_PI / 2.0);
     Vector3 rotation = get_rotation();
+    // look_at looks for the goal_pos in all 3 directions; this tilts the ally up/down. have to adjust
     rotate_object_local(Vector3(0, 0, 1), -rotation.z);
     movement.x = 1;
 }
