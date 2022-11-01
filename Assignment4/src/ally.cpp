@@ -32,8 +32,7 @@ void Ally::_init()
     movement = Vector3();
     gravity = 9.8;
     token_increment = 1;
-    state = RETURNING;
-    found_token = false;
+    state = SEARCHING;
     velocity = 5.0;
 }
 
