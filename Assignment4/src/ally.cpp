@@ -180,6 +180,8 @@ void Ally::move_to_goal(){
     // set_rotation(Vector3(0, angle * -1 / 2.0, 0));
     look_at(goal_pos, Vector3::UP);
     rotate_object_local(Vector3::UP, Math_PI / 2.0);
+    Vector3 rotation = get_rotation();
+    rotate_object_local(Vector3(0, 0, 1), -rotation.z);
     movement.x = 1;
 }
 
