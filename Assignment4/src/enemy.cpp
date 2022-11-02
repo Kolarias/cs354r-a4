@@ -39,6 +39,7 @@ void Enemy::_ready()
     enemy_search_area = Object::cast_to<Area>(Node::get_node("/root/Level/Enemy/EnemySearchArea"));
     enemy_area->connect("area_entered", enemy, "collision_handler");
     enemy_search_area->connect("area_entered", enemy, "player_entered");
+    enemy_search_area->connect("area_exited", enemy, "player_exited");
     gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
     slide_angle = Object::cast_to<Player::Player>(player)->slide_angle;
@@ -100,12 +101,24 @@ void Enemy::collision_handler(Area* area)
 
 void Enemy::player_entered(Area* area) 
 {
+    Godot::print("PLAYER_ENTERED HAS BEEN CALLED");
     Player::Player* player_node = Object::cast_to<Player::Player>(area->get_parent());
     
     // go toward player player
     if (player_node) {
         Godot::print("Player has entered enemy area, attacking");
         state = ATTACKING;
+    }
+}
+
+void Enemy::player_exited(Area* area) 
+{
+    Player::Player* player_node = Object::cast_to<Player::Player>(area->get_parent());
+    
+    // retreat
+    if (player_node) {
+        Godot::print("Player has exited area, retreating");
+        state = RETREATING;
     }
 }
 

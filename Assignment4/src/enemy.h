@@ -8,6 +8,7 @@
 #include <Label.hpp>
 #include <TextureProgress.hpp>
 #include <SceneTree.hpp>
+#include <Node.hpp>
 #include <string>
 
 namespace Enemy
@@ -48,6 +49,7 @@ public:
 
     void collision_handler(Area* area);
     void player_entered(Area* area);
+    void player_exited(Area* area);
     void handle_searching();
     void move_to_goal();
 };

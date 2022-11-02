@@ -26,7 +26,7 @@ void Player::_register_methods()
     register_property<Player, float>("Slide Angle", &Player::slide_angle, 0.785398);
     register_property<Player, bool>("Mute Audio", &Player::mute, false);
     register_property<Player, int>("Spike Damage", &Player::spike_damage, 5);
-    register_property<Player, int>("Enemy Damage", &Player::enemy_damage, 25);
+    register_property<Player, int>("Enemy Damage", &Player::enemy_damage, 10);
     register_property<Player, int>("Token Increment", &Player::token_increment, 1);
 }
 
@@ -42,7 +42,7 @@ void Player::_init()
     gliding = false;
     mute = false;
     spike_damage = 5;
-    enemy_damage = 25;
+    enemy_damage = 10;
     token_increment = 1;
 }
 
@@ -141,7 +141,7 @@ void Player::collision_handler(Area* area)
 {
     Token::Token* token = Object::cast_to<Token::Token>(area);
     Spike::Spike* spike = Object::cast_to<Spike::Spike>(area);
-    Enemy::Enemy* enemy = Object::cast_to<Enemy::Enemy>(area);
+    Enemy::Enemy* enemy = Object::cast_to<Enemy::Enemy>(area->get_parent());
     if (token) {
         // 1) Update token counter on GUI
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
@@ -174,6 +174,7 @@ void Player::collision_handler(Area* area)
             damage_audio->play();
         }
     } else if (enemy) {
+        Godot::print("Hit an enemy!");
         // 1) Decrease health counter on GUI and gauge
         int curr_count = stoi(hp_counter->get_text().utf8().get_data());
         curr_count -= enemy_damage;
