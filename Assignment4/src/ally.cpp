@@ -156,7 +156,7 @@ void Ally::handle_searching()
             // get distance to token
             Vector3 token_pos = token->get_translation();
             int distance = current_position.distance_to(token_pos);
-            if (distance <= min_dist || min_dist == 0){
+            if (token_pos.y > 0 && token_pos.y <= 4 && (distance <= min_dist || min_dist == 0)){
                 min_dist = distance;
                 token_goal = token;
             }
