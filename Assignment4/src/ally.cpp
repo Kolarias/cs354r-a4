@@ -70,7 +70,7 @@ void Ally::_process(float delta)
         // token has entered the area; token is now the goal pos. walk towards the token
         move_to_goal();
         // once picking up the token, return to the player
-    } else {
+    } else if (state == RETURNING) {
         // walk towards player (goal_pos is player).
         goal_pos = player->get_translation();
         move_to_goal();
@@ -104,7 +104,6 @@ void Ally::collision_handler(Area* area)
         token->queue_free();
         state = RETURNING;
         goal_pos = player->get_translation();
-        Godot::print("Ally picked up token");
     }
     // drop off tokens to player
     if (player_node) {
@@ -120,23 +119,22 @@ void Ally::collision_handler(Area* area)
             player->token_audio->play();
         }
         state = SEARCHING;
-        Godot::print("Ally dropped off tokens");
     }
 }
 
 void Ally::visibility_entered(Area* area) {
+    // this method is not really doing anything rn since we are using get_overlapping_areas in handle_searching
+    // Token::Token* token = Object::cast_to<Token::Token>(area);
 
-    Token::Token* token = Object::cast_to<Token::Token>(area);
-
-    if (state == SEARCHING) {
-        if (token) {
-            // only update goal_pos if we haven't found a token yet; don't want to keep updating goal
-            // if multiple tokens have entered the area
-            goal_pos = token->get_translation();
-            state = COLLECTING;
-            Godot::print("Ally found token");
-        }
-    }
+    // if (state == SEARCHING) {
+    //     if (token) {
+    //         // only update goal_pos if we haven't found a token yet; don't want to keep updating goal
+    //         // if multiple tokens have entered the area
+    //         goal_pos = token->get_translation();
+    //         state = COLLECTING;
+    //         Godot::print("Ally found token");
+    //     }
+    // }
 }
 
 void Ally::handle_searching()
@@ -167,20 +165,13 @@ void Ally::handle_searching()
         state = COLLECTING;
     }
     else {
-        goal_pos = player->get_translation();
+        // no token found; just follow the player
+        state = RETURNING;
     }
 }
 
-void Ally::move_to_goal(){
-    // orient towards goal_pos
-    // Vector3 current_position3d = get_translation();
-    // Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
-    // Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
-    // real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
-    // set_rotation(Vector3(0, angle * 0.5, 0));
-    // real_t angle = current_position2d->angle_to_point(*goal_pos2d) * (180 / Math_PI);
-    // set_rotation(Vector3(0, angle * -1 / 2.0, 0));
-
+void Ally::move_to_goal()
+{
     // look at the goal pos - automatically finds the shortest angle path to do thi
     look_at(goal_pos, Vector3::UP);
     // look_at automatically defines forwards as the -z axis; have to rotate to adjust for this
