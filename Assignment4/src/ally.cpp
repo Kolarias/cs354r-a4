@@ -116,6 +116,9 @@ void Ally::collision_handler(Area* area)
         godot::String new_count = godot::String(std_string.c_str());
         player->token_counter->set_text(new_count);
         token_counter->set_text("0");
+        if (!player->mute) {
+            player->token_audio->play();
+        }
         state = SEARCHING;
         Godot::print("Ally dropped off tokens");
     }
