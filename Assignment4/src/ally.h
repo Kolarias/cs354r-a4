@@ -37,7 +37,6 @@ private:
     Label* token_counter;
     Area* ally_area;
     Area* visibility;
-    bool found_token;
 
 public:
 

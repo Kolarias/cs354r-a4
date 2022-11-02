@@ -32,8 +32,7 @@ void Ally::_init()
     movement = Vector3();
     gravity = 9.8;
     token_increment = 1;
-    state = RETURNING;
-    found_token = false;
+    state = SEARCHING;
     velocity = 5.0;
 }
 
@@ -171,11 +170,21 @@ void Ally::handle_searching()
 
 void Ally::move_to_goal(){
     // orient towards goal_pos
-    Vector3 current_position3d = get_translation();
-    Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
-    Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
-    real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
-    set_rotation(Vector3(0, angle * 0.5, 0));
+    // Vector3 current_position3d = get_translation();
+    // Vector2 *current_position2d = new Vector2(current_position3d.x , current_position3d.z);
+    // Vector2 *goal_pos2d = new Vector2(goal_pos.x, goal_pos.z);
+    // real_t angle = atan2(current_position2d->x - goal_pos2d->x, current_position2d->y - goal_pos2d->y) * 180 / Math_PI;
+    // set_rotation(Vector3(0, angle * 0.5, 0));
+    // real_t angle = current_position2d->angle_to_point(*goal_pos2d) * (180 / Math_PI);
+    // set_rotation(Vector3(0, angle * -1 / 2.0, 0));
+
+    // look at the goal pos - automatically finds the shortest angle path to do thi
+    look_at(goal_pos, Vector3::UP);
+    // look_at automatically defines forwards as the -z axis; have to rotate to adjust for this
+    rotate_object_local(Vector3::UP, Math_PI / 2.0);
+    Vector3 rotation = get_rotation();
+    // look_at looks for the goal_pos in all 3 directions; this tilts the ally up/down. have to adjust
+    rotate_object_local(Vector3(0, 0, 1), -rotation.z);
     movement.x = 1;
 }
 
