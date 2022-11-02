@@ -30,8 +30,11 @@ private:
 
     // Non-editable in Godot editor
     Transform start_pos;
+    Vector3 goal_pos;
     KinematicBody* player;
     KinematicBody* enemy;
+    Area* enemy_area;
+    Area* enemy_search_area;
     Vector3 movement;
 
 public:
@@ -42,6 +45,11 @@ public:
     void _ready();
     void _process(float delta);
     void _physics_process(float delta);
+
+    void collision_handler(Area* area);
+    void player_entered(Area* area);
+    void handle_searching();
+    void move_to_goal();
 };
 }
 

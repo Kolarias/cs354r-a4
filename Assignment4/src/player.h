@@ -56,6 +56,7 @@ public:
     float jump;
     float slide_angle;
     int spike_damage;
+    int enemy_damage;
     int token_increment;
     Label* token_counter;
     Label* hp_counter;

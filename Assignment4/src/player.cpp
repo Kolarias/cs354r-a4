@@ -5,6 +5,7 @@
 #include "spike.h"
 #include "enemy.h"
 #include "ally.h"
+#include "enemy.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -25,6 +26,7 @@ void Player::_register_methods()
     register_property<Player, float>("Slide Angle", &Player::slide_angle, 0.785398);
     register_property<Player, bool>("Mute Audio", &Player::mute, false);
     register_property<Player, int>("Spike Damage", &Player::spike_damage, 5);
+    register_property<Player, int>("Enemy Damage", &Player::enemy_damage, 25);
     register_property<Player, int>("Token Increment", &Player::token_increment, 1);
 }
 
@@ -40,6 +42,7 @@ void Player::_init()
     gliding = false;
     mute = false;
     spike_damage = 5;
+    enemy_damage = 25;
     token_increment = 1;
 }
 
@@ -138,6 +141,7 @@ void Player::collision_handler(Area* area)
 {
     Token::Token* token = Object::cast_to<Token::Token>(area);
     Spike::Spike* spike = Object::cast_to<Spike::Spike>(area);
+    Enemy::Enemy* enemy = Object::cast_to<Enemy::Enemy>(area);
     if (token) {
         // 1) Update token counter on GUI
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
@@ -164,6 +168,23 @@ void Player::collision_handler(Area* area)
             hp_counter->set_text(new_count);
             hp_gauge->set_value(hp_gauge->get_value() - spike_damage);
             spike->queue_free();
+        }
+        // 2) Play damage sound
+        if (!mute) {
+            damage_audio->play();
+        }
+    } else if (enemy) {
+        // 1) Decrease health counter on GUI and gauge
+        int curr_count = stoi(hp_counter->get_text().utf8().get_data());
+        curr_count -= enemy_damage;
+        if (curr_count == 0) {
+            // died; reset scene
+            reset_scene();
+        } else {
+            std::string std_string = std::to_string(curr_count);
+            godot::String new_count = godot::String(std_string.c_str());
+            hp_counter->set_text(new_count);
+            hp_gauge->set_value(hp_gauge->get_value() - enemy_damage);
         }
         // 2) Play damage sound
         if (!mute) {

@@ -28,7 +28,6 @@ void Ally::_register_methods()
 
 void Ally::_init() 
 {
-    start_pos = get_global_transform();
     movement = Vector3();
     gravity = 9.8;
     token_increment = 1;
@@ -38,13 +37,14 @@ void Ally::_init()
 
 void Ally::_ready() 
 {
+    start_pos = get_global_transform();
     token_counter = Object::cast_to<Label>(Node::get_node("/root/Level/Ally/TokensLabel/Viewport/Tokens"));
     ally = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Ally"));
     ally_area = (Area*)(ally->get_node("AllyArea"));
     ally_area->connect("area_entered", ally, "collision_handler");
     visibility = (Area*)(ally->get_node("Visibility"));
     visibility->connect("area_entered", ally, "visibility_entered");
-    visibility->set_collision_mask(2);
+    //visibility->set_collision_mask(2);
     player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
@@ -169,7 +169,7 @@ void Ally::handle_searching()
 
 void Ally::move_to_goal()
 {
-    // look at the goal pos - automatically finds the shortest angle path to do thi
+    // look at the goal pos - automatically finds the shortest angle path to do this
     look_at(goal_pos, Vector3::UP);
     // look_at automatically defines forwards as the -z axis; have to rotate to adjust for this
     rotate_object_local(Vector3::UP, Math_PI / 2.0);
