@@ -38,8 +38,6 @@ private:
     RayCast* ray3;
     RayCast* ray4;
     RayCast* ray5;
-    AudioStreamPlayer* token_audio;
-    AudioStreamPlayer* damage_audio;
     AudioStreamPlayer* bgm_audio;
     AudioStreamPlayer* jump_audio;
     AudioStreamPlayer* glide_audio;
@@ -60,6 +58,9 @@ public:
     int token_increment;
     Label* token_counter;
     Label* hp_counter;
+
+    AudioStreamPlayer* token_audio;
+    AudioStreamPlayer* damage_audio;
 
     static void _register_methods();
 
