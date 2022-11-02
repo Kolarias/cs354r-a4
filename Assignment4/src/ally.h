@@ -48,7 +48,6 @@ public:
     void _physics_process(float delta);
     
     void collision_handler(Area* area);
-    void visibility_entered(Area* area);
     void handle_searching();
     void move_to_goal();
 };

@@ -18,7 +18,6 @@ void Ally::_register_methods()
     register_method("_ready", &Ally::_ready);
     register_method("_process", &Ally::_process);
     register_method("_physics_process", &Ally::_physics_process);
-    register_method("visibility_entered", &Ally::visibility_entered);
     register_method("collision_handler", &Ally::collision_handler);
 
 
@@ -109,6 +108,9 @@ void Ally::collision_handler(Area* area)
     if (player_node) {
         // 1) Update token counter on GUI
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
+        if (curr_count == 0){
+            return;
+        }
         int player_token_count = stoi(player->token_counter->get_text().utf8().get_data());
         player_token_count += curr_count;
         std::string std_string = std::to_string(player_token_count);
@@ -122,21 +124,6 @@ void Ally::collision_handler(Area* area)
     }
 }
 
-void Ally::visibility_entered(Area* area) {
-    // this method is not really doing anything rn since we are using get_overlapping_areas in handle_searching
-    // Token::Token* token = Object::cast_to<Token::Token>(area);
-
-    // if (state == SEARCHING) {
-    //     if (token) {
-    //         // only update goal_pos if we haven't found a token yet; don't want to keep updating goal
-    //         // if multiple tokens have entered the area
-    //         goal_pos = token->get_translation();
-    //         state = COLLECTING;
-    //         Godot::print("Ally found token");
-    //     }
-    // }
-}
-
 void Ally::handle_searching()
 {
     // just move in some direction; once a token enters the area for search_handler state will change to collecting
@@ -146,8 +133,11 @@ void Ally::handle_searching()
     Array overlapping_bodies = visibility->get_overlapping_areas();
     Vector3 current_position = get_translation();
     int min_dist = 0;
-    Token::Token* token_goal;
+    Token::Token* token_goal = nullptr;
     // iterate over the over the areas
+    if (overlapping_bodies.empty()){
+        return;
+    }
     for (int i = 0; i < overlapping_bodies.size(); i ++){
         Token::Token* token = Object::cast_to<Token::Token>(overlapping_bodies[i]);
         if (token){
@@ -166,7 +156,8 @@ void Ally::handle_searching()
     }
     else {
         // no token found; just follow the player
-        state = RETURNING;
+        goal_pos = player->get_translation();
+        move_to_goal();
     }
 }
 
