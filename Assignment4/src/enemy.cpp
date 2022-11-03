@@ -36,11 +36,11 @@ void Enemy::_ready()
 {
     srand (static_cast <unsigned> (time(0)));
     start_pos = get_global_transform();
-    enemy = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Enemy"));
     player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
-    enemy_area = Object::cast_to<Area>(Node::get_node("/root/Level/Enemy/EnemyArea"));
-    enemy_search_area = Object::cast_to<Area>(Node::get_node("/root/Level/Enemy/EnemySearchArea"));
+    enemy = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Enemy"));
+    enemy_area = Object::cast_to<Area>(enemy->get_node("EnemyArea"));
     enemy_area->connect("area_entered", enemy, "collision_handler");
+    enemy_search_area = Object::cast_to<Area>(enemy->get_node("EnemySearchArea"));
     enemy_search_area->connect("area_entered", enemy, "player_entered");
     enemy_search_area->connect("area_exited", enemy, "player_exited");
     gravity = Object::cast_to<Player::Player>(player)->gravity;
