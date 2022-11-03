@@ -20,8 +20,6 @@ void Ally::_register_methods()
     register_method("_physics_process", &Ally::_physics_process);
     register_method("collision_handler", &Ally::collision_handler);
 
-
-    register_property<Ally, float>("Gravity", &Ally::gravity, 9.8);
     register_property<Ally, int>("Token Increment", &Ally::token_increment, 1);
 }
 
@@ -43,7 +41,6 @@ void Ally::_ready()
     ally_area->connect("area_entered", ally, "collision_handler");
     visibility = (Area*)(ally->get_node("Visibility"));
     player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
-    gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
     slide_angle = Object::cast_to<Player::Player>(player)->slide_angle;
 }
@@ -128,16 +125,16 @@ void Ally::handle_searching()
     // maybe move behind player, like following the player and just scan for the closest token.
 
     // scans for tokens and set the closest one as a goal.
-    Array overlapping_bodies = visibility->get_overlapping_areas();
+    Array overlapping_areas = visibility->get_overlapping_areas();
     Vector3 current_position = get_translation();
     int min_dist = 0;
     Token::Token* token_goal = nullptr;
     // iterate over the over the areas
-    if (overlapping_bodies.empty()){
+    if (overlapping_areas.empty()){
         return;
     }
-    for (int i = 0; i < overlapping_bodies.size(); i ++){
-        Token::Token* token = Object::cast_to<Token::Token>(overlapping_bodies[i]);
+    for (int i = 0; i < overlapping_areas.size(); i ++){
+        Token::Token* token = Object::cast_to<Token::Token>(overlapping_areas[i]);
         if (token){
             // get distance to token
             Vector3 token_pos = token->get_translation();

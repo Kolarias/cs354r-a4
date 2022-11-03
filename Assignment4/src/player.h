@@ -54,7 +54,6 @@ public:
     float jump;
     float slide_angle;
     int spike_damage;
-    int enemy_damage;
     int token_increment;
     Label* token_counter;
     Label* hp_counter;
@@ -79,6 +78,8 @@ public:
     void process_on_air();
     void process_on_ledge();
     void wasd_movement(bool on_air);
+
+    void take_damage(int damage);
 };
 }
 

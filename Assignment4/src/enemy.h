@@ -11,6 +11,7 @@
 #include <Node.hpp>
 #include <string>
 #include "RandomNumberGenerator.hpp"
+#include "player.h"
 
 namespace Enemy
 {
@@ -24,18 +25,19 @@ private:
     float gravity;
     float jump;
     float slide_angle;
+    float velocity;
 
     int state;
 
     // Editable in the Godot editor
-    float velocity;
+    int enemy_damage;
 
     // Non-editable in Godot editor
     RandomNumberGenerator rng;
     Transform start_pos;
     Vector3 goal_pos;
     Vector3 wander_pos;
-    KinematicBody* player;
+    Player::Player* player;
     KinematicBody* enemy;
     Area* enemy_area;
     Area* visibility;

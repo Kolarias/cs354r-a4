@@ -20,7 +20,7 @@ void Enemy::_register_methods()
     register_method("_physics_process", &Enemy::_physics_process);
     register_method("collision_handler", &Enemy::collision_handler);
 
-    register_property<Enemy, float>("Gravity", &Enemy::gravity, 9.8);
+    register_property<Enemy, int>("Enemy Damage", &Enemy::enemy_damage, 10);
 }
 
 void Enemy::_init() 
@@ -30,13 +30,14 @@ void Enemy::_init()
     gravity = 9.8;
     state = SEARCHING;
     velocity = 5.0;
+    enemy_damage = 10;
 }
 
 void Enemy::_ready() 
 {
     srand(static_cast <unsigned> (time(0)));
     start_pos = get_global_transform();
-    player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
+    player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     enemy = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Enemy"));
     enemy_area = Object::cast_to<Area>(enemy->get_node("EnemyArea"));
     enemy_area->connect("area_entered", enemy, "collision_handler");
@@ -69,6 +70,7 @@ void Enemy::_process(float delta)
         if ((curr_pos.x - start_pos.origin.x) < 0.01 && (curr_pos.z - start_pos.origin.z) < 0.01) {
             Godot::print("Returned to starting position. Going back to searching state.");
             state = SEARCHING;
+            movement = Vector3();
         } else {
             // otherwise, continue going back to start position
             goal_pos = start_pos.origin;
@@ -96,6 +98,7 @@ void Enemy::collision_handler(Area* area)
         // player node will handle damage, just start retreating
         Godot::print("Enemy hit player - retreating from player");
         state = RETREATING;
+        player->take_damage(enemy_damage);
     }
 }
 
@@ -105,13 +108,14 @@ void Enemy::handle_searching()
     // within 50 units of the start_pos and go there. once there, find another random
     // point and repeat until enemy comes into range
 
-    Array overlapping_bodies = visibility->get_overlapping_areas();
+    Array overlapping_areas = visibility->get_overlapping_areas();
     
-    if (!overlapping_bodies.empty()) {
-        for (int i = 0; i < overlapping_bodies.size(); i++) {
+    if (!overlapping_areas.empty()) {
+        for (int i = 0; i < overlapping_areas.size(); i++) {
             // looking for player's PlayerArea
-            Area* area = Object::cast_to<Area>(overlapping_bodies[i]);
-            if (area->get_parent() == player) {
+            Area* area = Object::cast_to<Area>(overlapping_areas[i]);
+            Player::Player *player = Object::cast_to<Player::Player>(area->get_parent());
+            if (player){
                 state = ATTACKING;
             }
         }
