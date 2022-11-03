@@ -38,7 +38,7 @@ private:
     KinematicBody* player;
     KinematicBody* enemy;
     Area* enemy_area;
-    Area* enemy_search_area;
+    Area* visibility;
     Vector3 movement;
 
 public:
@@ -51,8 +51,6 @@ public:
     void _physics_process(float delta);
 
     void collision_handler(Area* area);
-    void player_entered(Area* area);
-    void player_exited(Area* area);
     void handle_searching();
     void move_to_goal();
 };

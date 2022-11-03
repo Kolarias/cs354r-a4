@@ -27,7 +27,7 @@ viewport_path = NodePath("TextLabel/Viewport")
 viewport_path = NodePath("TokensLabel/Viewport")
 
 [sub_resource type="BoxShape" id=10]
-extents = Vector3( 0.318313, 0.0653981, 0.212954 )
+extents = Vector3( 0.202, 0.1, 0.202 )
 
 [node name="Ally" type="KinematicBody"]
 script = ExtResource( 1 )

@@ -19,13 +19,13 @@ void Enemy::_register_methods()
     register_method("_process", &Enemy::_process);
     register_method("_physics_process", &Enemy::_physics_process);
     register_method("collision_handler", &Enemy::collision_handler);
-    register_method("player_entered", &Enemy::player_entered);
 
     register_property<Enemy, float>("Gravity", &Enemy::gravity, 9.8);
 }
 
 void Enemy::_init() 
 {
+    wander_pos = Vector3(0, 0, 0);
     movement = Vector3();
     gravity = 9.8;
     state = SEARCHING;
@@ -34,15 +34,13 @@ void Enemy::_init()
 
 void Enemy::_ready() 
 {
-    srand (static_cast <unsigned> (time(0)));
+    srand(static_cast <unsigned> (time(0)));
     start_pos = get_global_transform();
     player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
     enemy = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Enemy"));
     enemy_area = Object::cast_to<Area>(enemy->get_node("EnemyArea"));
     enemy_area->connect("area_entered", enemy, "collision_handler");
-    enemy_search_area = Object::cast_to<Area>(enemy->get_node("EnemySearchArea"));
-    enemy_search_area->connect("area_entered", enemy, "player_entered");
-    enemy_search_area->connect("area_exited", enemy, "player_exited");
+    visibility = Object::cast_to<Area>(enemy->get_node("EnemySearchArea"));
     gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
     slide_angle = Object::cast_to<Player::Player>(player)->slide_angle;
@@ -63,13 +61,11 @@ void Enemy::_process(float delta)
         handle_searching();
     } else if (state == ATTACKING) {
         // player has entered the area; player is now the goal pos
-        Godot::print("Attacking player");
         goal_pos = player->get_translation();
         move_to_goal();
-        // once picking up the token, return to the player
     } else if (state == RETREATING) {
         // if returned to start position, return to searching
-        Vector3 curr_pos = get_global_transform().origin;
+        Vector3 curr_pos = get_translation();
         if ((curr_pos.x - start_pos.origin.x) < 0.01 && (curr_pos.z - start_pos.origin.z) < 0.01) {
             Godot::print("Returned to starting position. Going back to searching state.");
             state = SEARCHING;
@@ -103,45 +99,37 @@ void Enemy::collision_handler(Area* area)
     }
 }
 
-void Enemy::player_entered(Area* area) 
-{
-    Godot::print("PLAYER_ENTERED HAS BEEN CALLED");
-    Player::Player* player_node = Object::cast_to<Player::Player>(area->get_parent());
-    
-    // go toward player player
-    if (player_node) {
-        Godot::print("Player has entered enemy area, attacking");
-        state = ATTACKING;
-    }
-}
-
-void Enemy::player_exited(Area* area) 
-{
-    Player::Player* player_node = Object::cast_to<Player::Player>(area->get_parent());
-    
-    // retreat
-    if (player_node) {
-        Godot::print("Player has exited area, retreating");
-        state = RETREATING;
-    }
-}
-
 void Enemy::handle_searching()
 {
     // we want the enemy to wander while the player isn't in range. find a random point
     // within 50 units of the start_pos and go there. once there, find another random
     // point and repeat until enemy comes into range
-    Vector3 curr_pos = get_global_transform().origin;
-    if ((curr_pos.x - wander_pos.x) > 0.01 && (curr_pos.z - wander_pos.z) > 0.01 ) {
-        move_to_goal();
-    } else {
-        Godot::print("CREATING NEW RANDOM POS...");
-        float new_x = (start_pos.origin.x - 15) + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((start_pos.origin.x + 15)-(start_pos.origin.x - 15))));
-        float new_z = (start_pos.origin.z - 15) + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((start_pos.origin.z + 15)-(start_pos.origin.z - 15))));
-        Vector3 new_pos = Vector3(new_x, curr_pos.y, new_z);
-        wander_pos = new_pos;
-        goal_pos = wander_pos;
+
+    Array overlapping_bodies = visibility->get_overlapping_areas();
+    
+    if (!overlapping_bodies.empty()) {
+        for (int i = 0; i < overlapping_bodies.size(); i++) {
+            // looking for player's PlayerArea
+            Area* area = Object::cast_to<Area>(overlapping_bodies[i]);
+            if (area->get_parent() == player) {
+                state = ATTACKING;
+            }
+        }
     }
+
+    // either theres no player in range or there's nothing at all in range; move in random direction
+
+    // Vector3 curr_pos = get_translation();
+    // if ((curr_pos.x - wander_pos.x) > 0.01 && (curr_pos.z - wander_pos.z) > 0.01) {
+    //     move_to_goal();
+    // } else {
+    //     Godot::print("CREATING NEW RANDOM POS...");
+    //     float new_x = (start_pos.origin.x - 15) + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((start_pos.origin.x + 15)-(start_pos.origin.x - 15))));
+    //     float new_z = (start_pos.origin.z - 15) + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((start_pos.origin.z + 15)-(start_pos.origin.z - 15))));
+    //     Vector3 new_pos = Vector3(new_x, curr_pos.y, new_z);
+    //     wander_pos = new_pos;
+    //     goal_pos = wander_pos;
+    // }
 }
 
 void Enemy::move_to_goal()

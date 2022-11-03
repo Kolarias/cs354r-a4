@@ -42,8 +42,6 @@ void Ally::_ready()
     ally_area = (Area*)(ally->get_node("AllyArea"));
     ally_area->connect("area_entered", ally, "collision_handler");
     visibility = (Area*)(ally->get_node("Visibility"));
-    visibility->connect("area_entered", ally, "visibility_entered");
-    //visibility->set_collision_mask(2);
     player = Object::cast_to<Player::Player>(Node::get_node("/root/Level/Player"));
     gravity = Object::cast_to<Player::Player>(player)->gravity;
     jump = Object::cast_to<Player::Player>(player)->jump;
