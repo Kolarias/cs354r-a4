@@ -74,7 +74,12 @@ void Ally::_process(float delta)
 
 void Ally::_physics_process(float delta) 
 {
-    movement.y -= (gravity * delta); // gravity
+    if (is_on_floor()){
+        movement.y = 0;  
+    }
+    else {
+        movement.y -= (gravity * delta); // gravity 
+    }
     Vector3 direction_vel = Vector3(movement);
     direction_vel.x *= float(velocity);
     direction_vel.z *= float(velocity);
