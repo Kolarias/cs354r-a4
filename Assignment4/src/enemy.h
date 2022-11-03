@@ -31,7 +31,6 @@ private:
     float velocity;
 
     // Non-editable in Godot editor
-    RandomNumberGenerator rng;
     Transform start_pos;
     Vector3 goal_pos;
     Vector3 wander_pos;

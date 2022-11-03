@@ -163,7 +163,7 @@ void Ally::handle_searching()
 
 void Ally::move_to_goal()
 {
-    // look at the goal pos - automatically finds the shortest angle path to do thi
+    // look at the goal pos - automatically finds the shortest angle path to do this
     look_at(goal_pos, Vector3::UP);
     // look_at automatically defines forwards as the -z axis; have to rotate to adjust for this
     rotate_object_local(Vector3::UP, Math_PI / 2.0);

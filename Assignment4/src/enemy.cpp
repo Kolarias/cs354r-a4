@@ -105,7 +105,6 @@ void Enemy::collision_handler(Area* area)
 
 void Enemy::player_entered(Area* area) 
 {
-    Godot::print("PLAYER_ENTERED HAS BEEN CALLED");
     Player::Player* player_node = Object::cast_to<Player::Player>(area->get_parent());
     
     // go toward player player
