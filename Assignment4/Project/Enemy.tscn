@@ -49,3 +49,5 @@ material/0 = SubResource( 6 )
 
 [node name="EnemySearchArea" type="Area" parent="."]
 transform = Transform( 150, 0, 0, 0, 100, 0, 0, 0, 150, 0, 0, 0 )
+collision_layer = 9
+collision_mask = 9

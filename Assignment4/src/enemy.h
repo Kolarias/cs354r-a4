@@ -10,6 +10,7 @@
 #include <SceneTree.hpp>
 #include <Node.hpp>
 #include <string>
+#include "RandomNumberGenerator.hpp"
 
 namespace Enemy
 {
@@ -30,8 +31,10 @@ private:
     float velocity;
 
     // Non-editable in Godot editor
+    RandomNumberGenerator rng;
     Transform start_pos;
     Vector3 goal_pos;
+    Vector3 wander_pos;
     KinematicBody* player;
     KinematicBody* enemy;
     Area* enemy_area;

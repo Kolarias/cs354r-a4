@@ -2,6 +2,8 @@
 #include "player.h"
 #include "GlobalConstants.hpp"
 #include "KinematicCollision.hpp"
+#include <stdlib.h>
+#include <ctime>
 
 namespace Enemy
 {
@@ -32,6 +34,7 @@ void Enemy::_init()
 
 void Enemy::_ready() 
 {
+    srand (static_cast <unsigned> (time(0)));
     start_pos = get_global_transform();
     enemy = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Enemy"));
     player = Object::cast_to<KinematicBody>(Node::get_node("/root/Level/Player"));
@@ -66,9 +69,10 @@ void Enemy::_process(float delta)
         // once picking up the token, return to the player
     } else if (state == RETREATING) {
         // if returned to start position, return to searching
-        if (get_translation() == start_pos.origin) {
+        Vector3 curr_pos = get_global_transform().origin;
+        if ((curr_pos.x - start_pos.origin.x) < 0.01 && (curr_pos.z - start_pos.origin.z) < 0.01) {
+            Godot::print("Returned to starting position. Going back to searching state.");
             state = SEARCHING;
-            handle_searching();
         } else {
             // otherwise, continue going back to start position
             goal_pos = start_pos.origin;
@@ -124,8 +128,20 @@ void Enemy::player_exited(Area* area)
 
 void Enemy::handle_searching()
 {
-    // just move in some direction for now
-    movement.x = 1;
+    // we want the enemy to wander while the player isn't in range. find a random point
+    // within 50 units of the start_pos and go there. once there, find another random
+    // point and repeat until enemy comes into range
+    Vector3 curr_pos = get_global_transform().origin;
+    if ((curr_pos.x - wander_pos.x) > 0.01 && (curr_pos.z - wander_pos.z) > 0.01 ) {
+        move_to_goal();
+    } else {
+        Godot::print("CREATING NEW RANDOM POS...");
+        float new_x = (start_pos.origin.x - 15) + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((start_pos.origin.x + 15)-(start_pos.origin.x - 15))));
+        float new_z = (start_pos.origin.z - 15) + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((start_pos.origin.z + 15)-(start_pos.origin.z - 15))));
+        Vector3 new_pos = Vector3(new_x, curr_pos.y, new_z);
+        wander_pos = new_pos;
+        goal_pos = wander_pos;
+    }
 }
 
 void Enemy::move_to_goal()
