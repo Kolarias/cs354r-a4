@@ -9,7 +9,7 @@ void Token::_register_methods()
 
 void Token::_ready() 
 {
-    set_collision_layer(2);
+    //set_collision_layer(2);
 }
 
 void Token::_init()

@@ -5,6 +5,7 @@
 #include "spike.h"
 #include "enemy.h"
 #include "ally.h"
+#include "enemy.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -16,6 +17,7 @@ void Player::_register_methods()
     register_method("_process", &Player::_process);
     register_method("_physics_process", &Player::_physics_process);
     register_method("collision_handler", &Player::collision_handler);
+    register_method("take_damage", &Player::take_damage);
 
     register_property<Player, bool>("Mouse Rotate", &Player::mouse_rotate, false);
     register_property<Player, bool>("AD Rotate", &Player::AD_rotate, false);
@@ -138,6 +140,7 @@ void Player::collision_handler(Area* area)
 {
     Token::Token* token = Object::cast_to<Token::Token>(area);
     Spike::Spike* spike = Object::cast_to<Spike::Spike>(area);
+    Enemy::Enemy* enemy = Object::cast_to<Enemy::Enemy>(area->get_parent());
     if (token) {
         // 1) Update token counter on GUI
         int curr_count = stoi(token_counter->get_text().utf8().get_data());
@@ -336,6 +339,26 @@ void Player::process_on_ledge(){
 void Player::reset_scene() 
 {
     get_tree()->reload_current_scene();
+}
+
+void Player::take_damage(int damage){
+        Godot::print("Hit an enemy!");
+        // 1) Decrease health counter on GUI and gauge
+        int curr_count = stoi(hp_counter->get_text().utf8().get_data());
+        curr_count -= damage;
+        if (curr_count == 0) {
+            // died; reset scene
+            reset_scene();
+        } else {
+            std::string std_string = std::to_string(curr_count);
+            godot::String new_count = godot::String(std_string.c_str());
+            hp_counter->set_text(new_count);
+            hp_gauge->set_value(hp_gauge->get_value() - damage);
+        }
+        // 2) Play damage sound
+        if (!mute) {
+            damage_audio->play();
+        }
 }
 
 }

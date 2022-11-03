@@ -8,7 +8,10 @@
 #include <Label.hpp>
 #include <TextureProgress.hpp>
 #include <SceneTree.hpp>
+#include <Node.hpp>
 #include <string>
+#include "RandomNumberGenerator.hpp"
+#include "player.h"
 
 namespace Enemy
 {
@@ -22,16 +25,22 @@ private:
     float gravity;
     float jump;
     float slide_angle;
+    float velocity;
 
     int state;
 
     // Editable in the Godot editor
-    float velocity;
+    int enemy_damage;
 
     // Non-editable in Godot editor
+    RandomNumberGenerator rng;
     Transform start_pos;
-    KinematicBody* player;
+    Vector3 goal_pos;
+    Vector3 wander_pos;
+    Player::Player* player;
     KinematicBody* enemy;
+    Area* enemy_area;
+    Area* visibility;
     Vector3 movement;
 
 public:
@@ -42,6 +51,10 @@ public:
     void _ready();
     void _process(float delta);
     void _physics_process(float delta);
+
+    void collision_handler(Area* area);
+    void handle_searching();
+    void move_to_goal();
 };
 }
 

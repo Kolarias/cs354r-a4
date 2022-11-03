@@ -78,6 +78,8 @@ public:
     void process_on_air();
     void process_on_ledge();
     void wasd_movement(bool on_air);
+
+    void take_damage(int damage);
 };
 }
 

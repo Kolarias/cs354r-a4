@@ -17,6 +17,8 @@
 [sub_resource type="PrismMesh" id=3]
 
 [node name="Player" type="KinematicBody"]
+collision_layer = 9
+collision_mask = 9
 script = ExtResource( 1 )
 "Mouse Rotate" = true
 Velocity = 10.0
@@ -36,18 +38,11 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="PlayerArea" type="Area" parent="."]
+collision_layer = 9
+collision_mask = 9
 
 [node name="CollisionShape2" type="CollisionShape" parent="PlayerArea"]
 shape = SubResource( 1 )
-
-[node name="MeshInstance" type="MeshInstance" parent="PlayerArea/CollisionShape2"]
-mesh = SubResource( 2 )
-material/0 = null
-
-[node name="MeshInstance2" type="MeshInstance" parent="PlayerArea/CollisionShape2"]
-transform = Transform( 0.433013, -0.25, 0, 0.25, 0.433013, 0, 0, 0, 0.5, 0.849737, 0.85124, 0 )
-mesh = SubResource( 3 )
-material/0 = null
 
 [node name="Pivot" type="Spatial" parent="."]
 transform = Transform( 0.901417, 0.432951, 0, -0.432951, 0.901417, 0, 0, 0, 1, 0, 0, 0 )
