@@ -61,14 +61,34 @@ void Enemy::_process(float delta)
         // just walk in some direction meaninglessly until player enters the area
         handle_searching();
     } else if (state == ATTACKING) {
-        // player has entered the area; player is now the goal pos
-        goal_pos = player->get_translation();
-        move_to_goal();
+        // Check if player is still in range
+        Array overlapping_areas = visibility->get_overlapping_areas();
+        bool still_in_range = false;
+        if (!overlapping_areas.empty()) {
+            for (int i = 0; i < overlapping_areas.size(); i++) {
+                // looking for player's PlayerArea
+                Area* area = Object::cast_to<Area>(overlapping_areas[i]);
+                Player::Player *player = Object::cast_to<Player::Player>(area->get_parent());
+                if (player) {
+                    still_in_range = true;
+                }
+            }
+        }
+        if (still_in_range) {
+            // player has entered the area; player is now the goal pos
+            goal_pos = player->get_translation();
+            move_to_goal();
+        } else {
+            state = RETREATING;
+            goal_pos = start_pos.origin;
+            move_to_goal();
+            return;
+        }
     } else if (state == RETREATING) {
         // if returned to start position, return to searching
         Vector3 curr_pos = get_translation();
-        if ((curr_pos.x - start_pos.origin.x) < 0.01 && (curr_pos.z - start_pos.origin.z) < 0.01) {
-            Godot::print("Returned to starting position. Going back to searching state.");
+        if ((curr_pos.x - start_pos.origin.x) < 0.1 && (curr_pos.z - start_pos.origin.z) < 0.1) {
+            //Godot::print("Returned to starting position. Going back to searching state.");
             state = SEARCHING;
             movement = Vector3();
         } else {
@@ -101,7 +121,7 @@ void Enemy::collision_handler(Area* area)
     // hit player
     if (player_node) {
         // player node will handle damage, just start retreating
-        Godot::print("Enemy hit player - retreating from player");
+        //Godot::print("Enemy hit player - retreating from player");
         state = RETREATING;
         player->take_damage(enemy_damage);
     }

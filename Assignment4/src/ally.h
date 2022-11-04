@@ -34,6 +34,7 @@ private:
     Player::Player* player;
     KinematicBody* ally;
     Vector3 movement;
+    Vector3 next_token_pos;
     Label* token_counter;
     Area* ally_area;
     Area* visibility;

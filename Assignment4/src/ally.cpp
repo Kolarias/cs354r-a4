@@ -26,6 +26,7 @@ void Ally::_register_methods()
 void Ally::_init() 
 {
     movement = Vector3();
+    next_token_pos = Vector3();
     gravity = 9.8;
     token_increment = 1;
     state = SEARCHING;
@@ -62,10 +63,16 @@ void Ally::_process(float delta)
         handle_searching();
     } else if (state == COLLECTING) {
         // token has entered the area; token is now the goal pos. walk towards the token
-        move_to_goal();
-        // once picking up the token, return to the player
+        Vector3 curr_pos = get_translation();
+        if ((curr_pos.x - next_token_pos.x) < 0.1 && (curr_pos.z - next_token_pos.z) < 0.1) {
+            // We've reached the next token, and presumable collected it if its there. go back to searching
+            state = SEARCHING;
+        } else {
+            move_to_goal();
+        }
     } else if (state == RETURNING) {
         // walk towards player (goal_pos is player).
+        next_token_pos = Vector3();
         goal_pos = player->get_translation();
         move_to_goal();
         // once dropped tokens off to player, return to searching
@@ -152,6 +159,7 @@ void Ally::handle_searching()
     }
     if (token_goal != nullptr){
         goal_pos = token_goal->get_translation();
+        next_token_pos = token_goal->get_translation();
         state = COLLECTING;
     }
     else {

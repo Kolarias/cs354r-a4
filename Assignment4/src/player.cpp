@@ -342,7 +342,7 @@ void Player::reset_scene()
 }
 
 void Player::take_damage(int damage){
-        Godot::print("Hit an enemy!");
+        //Godot::print("Hit an enemy!");
         // 1) Decrease health counter on GUI and gauge
         int curr_count = stoi(hp_counter->get_text().utf8().get_data());
         curr_count -= damage;
